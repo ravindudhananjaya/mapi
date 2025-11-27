@@ -1,0 +1,80 @@
+import React from 'react';
+import { ContentData } from '../types';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+
+interface FooterProps {
+  content: ContentData;
+}
+
+const Footer: React.FC<FooterProps> = ({ content }) => {
+  return (
+    <footer id="contact" className="bg-brand-teal text-white">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="space-y-8 xl:col-span-1">
+             <div className="flex items-center gap-2">
+                <div className="bg-brand-orange p-1.5 rounded-full">
+                    <div className="h-6 w-6 rounded-full border-2 border-white"></div>
+                </div>
+                <span className="font-bold text-2xl tracking-tight">MAPI</span>
+            </div>
+            <p className="text-gray-300 text-base">
+              {content.footer.tagline}
+            </p>
+            <div className="flex space-x-6">
+              <a href="#" className="text-gray-400 hover:text-white">
+                <span className="sr-only">Facebook</span>
+                <Facebook className="h-6 w-6" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white">
+                <span className="sr-only">Instagram</span>
+                <Instagram className="h-6 w-6" />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white">
+                <span className="sr-only">LinkedIn</span>
+                <Linkedin className="h-6 w-6" />
+              </a>
+            </div>
+          </div>
+          <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+            <div className="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">{content.nav.services}</h3>
+                <ul role="list" className="mt-4 space-y-4">
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Basic Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Standard Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Premium Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Transportation</a></li>
+                </ul>
+              </div>
+              <div className="mt-12 md:mt-0">
+                <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">{content.footer.contact}</h3>
+                <ul role="list" className="mt-4 space-y-4">
+                  <li className="flex items-start gap-3">
+                    <MapPin className="h-6 w-6 text-brand-orange shrink-0" />
+                    <span className="text-base text-gray-300">Kathmandu, Nepal</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Phone className="h-6 w-6 text-brand-orange shrink-0" />
+                    <span className="text-base text-gray-300">+977 9800000000</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Mail className="h-6 w-6 text-brand-orange shrink-0" />
+                    <span className="text-base text-gray-300">info@mapi.com.np</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-12 border-t border-teal-800 pt-8">
+          <p className="text-base text-gray-400 xl:text-center">
+            {content.footer.copyright}
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
