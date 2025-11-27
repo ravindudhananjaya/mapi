@@ -41,7 +41,8 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
         <div className="flex justify-between h-20">
           <div className="flex items-center cursor-pointer" onClick={() => setCurrentPage('home')}>
             <div className="flex-shrink-0 flex items-center gap-2">
-              <img src="/logo.png" alt="MAPI Logo" className="h-12 w-auto" />
+              <img src="/logo.png" alt="MAPI Logo" className="h-10 w-auto" />
+              <span className="text-2xl font-extrabold text-brand-teal tracking-tight">MAPI</span>
             </div>
           </div>
 

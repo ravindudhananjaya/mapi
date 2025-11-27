@@ -68,7 +68,7 @@ const About: React.FC<AboutProps> = ({ content }) => {
           >
             <div className="absolute inset-0 bg-brand-teal/10 transform rotate-3 rounded-2xl"></div>
             <img
-              src="/about-hero.png"
+              src="/mission-hero.png"
               alt="Elderly couple in garden"
               className="relative rounded-2xl shadow-2xl w-full h-auto object-cover transform -rotate-3 hover:rotate-0 transition-transform duration-500"
             />

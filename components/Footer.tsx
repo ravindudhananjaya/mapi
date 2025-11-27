@@ -14,6 +14,7 @@ const Footer: React.FC<FooterProps> = ({ content }) => {
           <div className="space-y-8 xl:col-span-1">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="MAPI Logo" className="h-10 w-auto brightness-0 invert" />
+              <span className="text-2xl font-extrabold text-white tracking-tight">MAPI</span>
             </div>
             <p className="text-gray-300 text-base">
               {content.footer.tagline}
