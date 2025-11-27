@@ -20,6 +20,8 @@ import ProviderDashboard from './components/ProviderDashboard';
 import ProviderSchedule from './components/ProviderSchedule';
 import ProviderPatients from './components/ProviderPatients';
 import DriverDashboard from './components/DriverDashboard';
+import DriverTrips from './components/DriverTrips';
+import DriverSchedule from './components/DriverSchedule';
 import ServiceInfoPage from './components/ServiceInfo';
 import ServiceSelection from './components/ServiceSelection';
 import SubscriptionPlans from './components/SubscriptionPlans';
@@ -144,8 +146,8 @@ function AppContent() {
               <Features content={content} />
               <AppShowcase content={content} />
               <Process content={content} />
-              <Testimonials content={content} />
               <Partners content={content} />
+              <Testimonials content={content} />
               <div className="bg-gray-50 py-24 text-center">
                 <h2 className="text-3xl font-bold mb-6 text-gray-900">{content.pricing.title}</h2>
                 <p className="mb-8 text-gray-600 max-w-2xl mx-auto px-4">{content.pricing.subtitle}</p>
@@ -202,7 +204,28 @@ function AppContent() {
           <Route path="/admin-dashboard" element={
             user ? (
               <DashboardLayout user={user} onLogout={handleLogout}>
-                <AdminDashboard content={content} />
+                <AdminDashboard content={content} initialTab="overview" />
+              </DashboardLayout>
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/admin-staff" element={
+            user ? (
+              <DashboardLayout user={user} onLogout={handleLogout}>
+                <AdminDashboard content={content} initialTab="staff" />
+              </DashboardLayout>
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/admin-customers" element={
+            user ? (
+              <DashboardLayout user={user} onLogout={handleLogout}>
+                <AdminDashboard content={content} initialTab="customers" />
+              </DashboardLayout>
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/admin-reports" element={
+            user ? (
+              <DashboardLayout user={user} onLogout={handleLogout}>
+                <AdminDashboard content={content} initialTab="reports" />
               </DashboardLayout>
             ) : <Navigate to="/login" />
           } />
@@ -231,6 +254,20 @@ function AppContent() {
             user ? (
               <DashboardLayout user={user} onLogout={handleLogout}>
                 <DriverDashboard content={content} />
+              </DashboardLayout>
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/driver-trips" element={
+            user ? (
+              <DashboardLayout user={user} onLogout={handleLogout}>
+                <DriverTrips content={content} />
+              </DashboardLayout>
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/driver-schedule" element={
+            user ? (
+              <DashboardLayout user={user} onLogout={handleLogout}>
+                <DriverSchedule content={content} />
               </DashboardLayout>
             ) : <Navigate to="/login" />
           } />

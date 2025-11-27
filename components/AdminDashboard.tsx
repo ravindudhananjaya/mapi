@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { ContentData } from '../types';
-import { Users, DollarSign, Activity, Calendar, ClipboardList, Briefcase, RefreshCw, UserPlus, CreditCard, ChevronRight, CheckCircle, Truck, Stethoscope } from 'lucide-react';
+import { Users, DollarSign, Activity, Calendar, ClipboardList, Briefcase, RefreshCw, UserPlus, CreditCard, ChevronRight, CheckCircle, Truck, Stethoscope, FileText, User, Mail, PieChart, BarChart, Server, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface AdminDashboardProps {
   content: ContentData;
+  initialTab?: 'overview' | 'staff' | 'assignments' | 'payments' | 'renewals' | 'customers' | 'reports' | 'transportation';
 }
 
-type Tab = 'overview' | 'staff' | 'assignments' | 'payments' | 'renewals';
+type Tab = 'overview' | 'staff' | 'assignments' | 'payments' | 'renewals' | 'customers' | 'reports' | 'transportation';
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('overview');
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ content, initialTab = 'overview' }) => {
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
+
+  React.useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
   const [assigningId, setAssigningId] = useState<number | null>(null);
   const [assigningType, setAssigningType] = useState<'provider' | 'driver' | null>(null);
@@ -20,16 +26,42 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
     { id: 1, name: 'Sita Sharma', role: 'Care Provider', contact: '9841234567', active: true },
     { id: 2, name: 'Ram Bahadur', role: 'Driver', contact: '9851012345', active: true },
     { id: 3, name: 'Gita Koirala', role: 'Care Provider', contact: '9803214567', active: true },
+    { id: 4, name: 'Hari Krishna', role: 'Driver', contact: '9867890123', active: false },
+    { id: 5, name: 'Sunita Gurung', role: 'Care Provider', contact: '9812345678', active: true },
+    { id: 6, name: 'Ramesh Thapa', role: 'Driver', contact: '9845678901', active: true },
   ]);
+
+  const customers = [
+    { id: 1, name: 'Hari Prasad', email: 'hari@example.com', plan: 'Premium Care', status: 'Active', joinDate: 'Jan 15, 2024' },
+    { id: 2, name: 'Maya Devi', email: 'maya@example.com', plan: 'Standard Care', status: 'Active', joinDate: 'Feb 20, 2024' },
+    { id: 3, name: 'Bishal Rai', email: 'bishal@example.com', plan: 'Basic Care', status: 'Inactive', joinDate: 'Mar 10, 2024' },
+    { id: 4, name: 'Suresh KC', email: 'suresh@example.com', plan: 'Standard Care', status: 'Active', joinDate: 'Apr 05, 2024' },
+    { id: 5, name: 'Anita Shrestha', email: 'anita@example.com', plan: 'Premium Care', status: 'Active', joinDate: 'May 12, 2024' },
+    { id: 6, name: 'Rajendra Mahato', email: 'rajendra@example.com', plan: 'Basic Care', status: 'Active', joinDate: 'Jun 01, 2024' },
+    { id: 7, name: 'Saraswati Joshi', email: 'saraswati@example.com', plan: 'Standard Care', status: 'Inactive', joinDate: 'Jul 18, 2024' },
+  ];
+
+  const reports = [
+    { id: 1, title: 'Monthly Revenue Report', date: 'Oct 2024', type: 'Financial', status: 'Ready' },
+    { id: 2, title: 'User Growth Analysis', date: 'Q3 2024', type: 'Analytics', status: 'Ready' },
+    { id: 3, title: 'Provider Performance', date: 'Sep 2024', type: 'Performance', status: 'Ready' },
+    { id: 4, title: 'Service Usage Stats', date: 'Oct 2024', type: 'Usage', status: 'Processing' },
+    { id: 5, title: 'Customer Satisfaction Survey', date: 'Q3 2024', type: 'Feedback', status: 'Ready' },
+    { id: 6, title: 'Operational Costs', date: 'Oct 2024', type: 'Financial', status: 'Processing' },
+  ];
 
   const [subscriptions, setSubscriptions] = useState([
     { id: 101, user: 'Hari Prasad', plan: 'Premium Care', assignedTo: null as string | null, date: 'Oct 25, 2024' },
     { id: 102, user: 'Maya Devi', plan: 'Standard Care', assignedTo: 'Sita Sharma', date: 'Oct 20, 2024' },
+    { id: 103, user: 'Anita Shrestha', plan: 'Premium Care', assignedTo: null as string | null, date: 'Oct 28, 2024' },
+    { id: 104, user: 'Rajendra Mahato', plan: 'Basic Care', assignedTo: 'Gita Koirala', date: 'Oct 29, 2024' },
   ]);
 
   const [orders, setOrders] = useState([
     { id: 201, user: 'Bishal Rai', service: 'Grocery Run', assignedTo: null as string | null, date: 'Oct 26, 2024' },
     { id: 202, user: 'Pema Sherpa', service: 'Transport (Hospital)', assignedTo: 'Ram Bahadur', date: 'Oct 24, 2024' },
+    { id: 203, user: 'Saraswati Joshi', service: 'Medicine Delivery', assignedTo: null as string | null, date: 'Oct 30, 2024' },
+    { id: 204, user: 'Suresh KC', service: 'Check-up Assistance', assignedTo: 'Ramesh Thapa', date: 'Oct 31, 2024' },
   ]);
 
   const payments = [
@@ -37,12 +69,43 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
     { id: 'TXN-1002', user: 'Maya Devi', amount: 'NPR 15,000', date: 'Oct 20, 2024', method: 'Khalti', status: 'Success' },
     { id: 'TXN-1003', user: 'Bishal Rai', amount: 'NPR 1,000', date: 'Oct 26, 2024', method: 'Stripe', status: 'Success' },
     { id: 'TXN-1004', user: 'Suresh KC', amount: 'NPR 8,000', date: 'Sep 15, 2024', method: 'eSewa', status: 'Success' },
+    { id: 'TXN-1005', user: 'Anita Shrestha', amount: 'NPR 30,000', date: 'Oct 28, 2024', method: 'Bank Transfer', status: 'Pending' },
+    { id: 'TXN-1006', user: 'Rajendra Mahato', amount: 'NPR 5,000', date: 'Oct 29, 2024', method: 'Khalti', status: 'Success' },
   ];
 
   const renewals = [
     { id: 301, user: 'Suresh KC', plan: 'Basic Care', expiryDate: 'Nov 01, 2024', daysLeft: 6 },
     { id: 302, user: 'Rita Thapa', plan: 'Standard Care', expiryDate: 'Nov 05, 2024', daysLeft: 10 },
+    { id: 303, user: 'Bishal Rai', plan: 'Basic Care', expiryDate: 'Nov 12, 2024', daysLeft: 17 },
+    { id: 304, user: 'Saraswati Joshi', plan: 'Standard Care', expiryDate: 'Nov 20, 2024', daysLeft: 25 },
   ];
+
+  const transportationRequests = [
+    { id: 401, user: 'Pema Sherpa', destination: 'Norvic Hospital', date: 'Oct 28, 2024', time: '10:00 AM', status: 'Pending', assignedTo: null },
+    { id: 402, user: 'Ram Kumar', destination: 'Teaching Hospital', date: 'Oct 29, 2024', time: '02:00 PM', status: 'Assigned', assignedTo: 'Ram Bahadur' },
+    { id: 403, user: 'Sita Devi', destination: 'Mediciti Hospital', date: 'Oct 30, 2024', time: '09:00 AM', status: 'Completed', assignedTo: 'Shyam Krishna' },
+    { id: 404, user: 'Gopal Verma', destination: 'Grande Hospital', date: 'Nov 01, 2024', time: '08:30 AM', status: 'Pending', assignedTo: null },
+    { id: 405, user: 'Meena Gurung', destination: 'Bir Hospital', date: 'Nov 02, 2024', time: '11:00 AM', status: 'Pending', assignedTo: null },
+  ];
+
+  const analyticsData = {
+    revenueByPlan: [
+      { name: 'Premium Care', value: 45, color: 'bg-purple-500', amount: 'NPR 1.8M' },
+      { name: 'Standard Care', value: 35, color: 'bg-blue-500', amount: 'NPR 1.4M' },
+      { name: 'Basic Care', value: 20, color: 'bg-green-500', amount: 'NPR 0.8M' },
+    ],
+    serviceUsage: [
+      { name: 'Grocery Run', value: 75, color: 'bg-orange-500' },
+      { name: 'Medical Transport', value: 60, color: 'bg-red-500' },
+      { name: 'Check-up Assistance', value: 45, color: 'bg-teal-500' },
+      { name: 'Home Care', value: 30, color: 'bg-indigo-500' },
+    ],
+    systemHealth: [
+      { name: 'Server Load', value: 42, status: 'Healthy', color: 'text-green-600' },
+      { name: 'Database Usage', value: 68, status: 'Moderate', color: 'text-yellow-600' },
+      { name: 'Memory Usage', value: 35, status: 'Healthy', color: 'text-green-600' },
+    ]
+  };
 
   const handleAddStaff = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +162,99 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            {/* Analytics Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Revenue Breakdown */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <PieChart className="h-5 w-5 text-brand-teal" />
+                    Revenue Distribution
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  {analyticsData.revenueByPlan.map((item, idx) => (
+                    <div key={idx}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-600">{item.name}</span>
+                        <span className="font-medium text-gray-900">{item.amount}</span>
+                      </div>
+                      <div className="w-full bg-gray-100 rounded-full h-2">
+                        <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${item.value}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Service Usage */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <BarChart className="h-5 w-5 text-brand-orange" />
+                    Top Services
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  {analyticsData.serviceUsage.map((item, idx) => (
+                    <div key={idx}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-gray-600">{item.name}</span>
+                        <span className="font-medium text-gray-900">{item.value}%</span>
+                      </div>
+                      <div className="w-full bg-gray-100 rounded-full h-2">
+                        <div className={`h-2 rounded-full ${item.color}`} style={{ width: `${item.value}%` }}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* System Health */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-purple-600" />
+                    System Health
+                  </h3>
+                  <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">Operational</span>
+                </div>
+                <div className="space-y-6">
+                  {analyticsData.systemHealth.map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-gray-50 rounded-lg">
+                          <Server className="h-4 w-4 text-gray-500" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                          <p className={`text-xs ${item.color}`}>{item.status}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-lg font-bold text-gray-900">{item.value}%</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -182,7 +338,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                       </td>
                       <td className="px-6 py-4 text-gray-600">{member.contact}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${member.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${member.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} `}>
                           {member.active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
@@ -232,6 +388,78 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                 </motion.div>
               )}
             </AnimatePresence>
+          </motion.div>
+        );
+
+      case 'customers':
+        return (
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-6">
+            <h2 className="text-xl font-bold text-gray-900">Customer Management</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-left">
+                <thead className="bg-gray-50 text-gray-500 text-xs uppercase">
+                  <tr>
+                    <th className="px-6 py-3">Name</th>
+                    <th className="px-6 py-3">Email</th>
+                    <th className="px-6 py-3">Current Plan</th>
+                    <th className="px-6 py-3">Joined Date</th>
+                    <th className="px-6 py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {customers.map((customer) => (
+                    <tr key={customer.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-gray-900 flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                          <User className="h-4 w-4" />
+                        </div>
+                        {customer.name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">{customer.email}</td>
+                      <td className="px-6 py-4 text-gray-600">
+                        <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">{customer.plan}</span>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">{customer.joinDate}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${customer.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'} `}>
+                          {customer.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        );
+
+      case 'reports':
+        return (
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-6">
+            <h2 className="text-xl font-bold text-gray-900">System Reports</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {reports.map((report) => (
+                <motion.div
+                  key={report.id}
+                  whileHover={{ y: -5 }}
+                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-brand-teal/10 rounded-lg text-brand-teal">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <span className={`text-xs px-2 py-1 rounded-full font-bold ${report.status === 'Ready' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'} `}>
+                      {report.status}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-1">{report.title}</h3>
+                  <p className="text-sm text-gray-500 mb-4">{report.type} • {report.date}</p>
+                  <button className="w-full py-2 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors text-sm font-medium">
+                    Download PDF
+                  </button>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         );
 
@@ -379,6 +607,66 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
           </motion.div>
         );
 
+      case 'transportation':
+        return (
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-6">
+            <h2 className="text-xl font-bold text-gray-900">Transportation Requests</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <table className="w-full text-left">
+                <thead className="bg-gray-50 text-gray-500 text-xs uppercase">
+                  <tr>
+                    <th className="px-6 py-3">User</th>
+                    <th className="px-6 py-3">Destination</th>
+                    <th className="px-6 py-3">Date & Time</th>
+                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3">Assigned Driver</th>
+                    <th className="px-6 py-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {transportationRequests.map((req) => (
+                    <tr key={req.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 font-medium text-gray-900">{req.user}</td>
+                      <td className="px-6 py-4 text-gray-600">{req.destination}</td>
+                      <td className="px-6 py-4 text-gray-600">
+                        <div className="flex flex-col">
+                          <span>{req.date}</span>
+                          <span className="text-xs text-gray-400">{req.time}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${req.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                          req.status === 'Assigned' ? 'bg-blue-100 text-blue-700' :
+                            'bg-yellow-100 text-yellow-700'
+                          }`}>
+                          {req.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">
+                        {req.assignedTo ? (
+                          <span className="flex items-center gap-2">
+                            <Truck className="h-4 w-4 text-brand-orange" />
+                            {req.assignedTo}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 italic">Unassigned</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        {!req.assignedTo && (
+                          <button className="text-sm text-brand-orange font-medium hover:underline">
+                            Assign Driver
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        );
+
       case 'renewals':
         return (
           <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -401,9 +689,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                   <Calendar className="h-4 w-4" />
                   Expiry: {item.expiryDate}
                 </div>
-                <button className="w-full py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors">
-                  <RefreshCw className="h-4 w-4" />
-                  {content.adminDashboard.renewals.action}
+                <button
+                  onClick={() => alert(`Renewal email sent to ${item.user}`)}
+                  className="w-full py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                  Send Renewal Email
                 </button>
               </motion.div>
             ))}
@@ -416,49 +707,49 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-      {/* Sidebar */}
-      <div className="w-full md:w-64 bg-white border-r border-gray-200 flex-shrink-0">
-        <div className="p-6 border-b border-gray-100 flex items-center gap-3">
-          <img src="/logo.png" alt="MAPI Logo" className="h-8 w-auto" />
-          <h1 className="text-xl font-bold text-brand-teal">Admin Panel</h1>
-        </div>
-        <nav className="p-4 space-y-2">
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Top Navigation Tabs */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-1 mb-8 flex flex-wrap gap-1">
           {[
             { id: 'overview', icon: Activity, label: content.adminDashboard.nav.overview },
             { id: 'staff', icon: Briefcase, label: content.adminDashboard.nav.staff },
+            { id: 'customers', icon: Users, label: 'Customers' },
             { id: 'assignments', icon: ClipboardList, label: content.adminDashboard.nav.assignments },
+            { id: 'transportation', icon: Truck, label: 'Transportation' },
             { id: 'payments', icon: DollarSign, label: content.adminDashboard.nav.payments },
+            { id: 'reports', icon: FileText, label: 'Reports' },
             { id: 'renewals', icon: RefreshCw, label: content.adminDashboard.nav.renewals }
           ].map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id as Tab)}
-              className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all ${activeTab === item.id ? 'bg-brand-teal text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
+              className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg flex items-center justify-center gap-2 transition-all font-medium text-sm ${activeTab === item.id
+                ? 'bg-brand-teal text-white shadow-sm'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                } `}
             >
-              <item.icon className="h-5 w-5" /> {item.label}
+              <item.icon className="h-4 w-4" /> {item.label}
             </button>
           ))}
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 p-8 overflow-y-auto">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 capitalize">
-              {activeTab === 'overview' ? content.adminDashboard.nav.overview :
-                activeTab === 'staff' ? content.adminDashboard.nav.staff :
-                  activeTab === 'assignments' ? content.adminDashboard.nav.assignments :
-                    activeTab === 'payments' ? content.adminDashboard.nav.payments :
-                      content.adminDashboard.nav.renewals}
-            </h2>
-            <div className="text-sm text-gray-500">{new Date().toDateString()}</div>
-          </div>
-          <AnimatePresence mode="wait">
-            {renderContent()}
-          </AnimatePresence>
         </div>
+
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 capitalize">
+            {activeTab === 'overview' ? content.adminDashboard.nav.overview :
+              activeTab === 'staff' ? content.adminDashboard.nav.staff :
+                activeTab === 'customers' ? 'Customer Management' :
+                  activeTab === 'assignments' ? content.adminDashboard.nav.assignments :
+                    activeTab === 'transportation' ? 'Transportation Requests' :
+                      activeTab === 'payments' ? content.adminDashboard.nav.payments :
+                        activeTab === 'reports' ? 'System Reports' :
+                          content.adminDashboard.nav.renewals}
+          </h2>
+          <div className="text-sm text-gray-500">{new Date().toDateString()}</div>
+        </div>
+        <AnimatePresence mode="wait">
+          {renderContent()}
+        </AnimatePresence>
       </div>
     </div>
   );

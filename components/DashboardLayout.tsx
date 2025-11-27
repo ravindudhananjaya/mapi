@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, UserRole } from '../types';
-import { Home, Settings, LogOut, Menu, X, Users, Calendar, Truck, BarChart3, User as UserIcon, Clock, FileText } from 'lucide-react';
+import { Home, Settings, LogOut, Menu, X, Users, Calendar, Truck, BarChart3, User as UserIcon, Clock, FileText, Car } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface DashboardLayoutProps {
@@ -26,7 +26,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ user, onLogout, child
             case 'admin':
                 return [
                     { icon: BarChart3, label: 'Admin Dashboard', path: '/admin-dashboard' },
-                    { icon: Users, label: 'Manage Staff', path: '/admin-dashboard' },
+                    { icon: Users, label: 'Manage Staff', path: '/admin-staff' },
+                    { icon: UserIcon, label: 'Customers', path: '/admin-customers' },
+                    { icon: FileText, label: 'Reports', path: '/admin-reports' },
                     { icon: Settings, label: 'Settings', path: '/settings' },
                 ];
             case 'provider':
@@ -38,8 +40,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ user, onLogout, child
                 ];
             case 'driver':
                 return [
-                    { icon: Truck, label: 'My Trips', path: '/driver-dashboard' },
-                    { icon: Calendar, label: 'Schedule', path: '/driver-dashboard' },
+                    { icon: Home, label: 'Dashboard', path: '/driver-dashboard' },
+                    { icon: Car, label: 'My Trips', path: '/driver-trips' },
+                    { icon: Calendar, label: 'Schedule', path: '/driver-schedule' },
                     { icon: Settings, label: 'Settings', path: '/settings' },
                 ];
             default:

@@ -121,7 +121,7 @@ export const CONTENT: Record<Language, ContentData> = {
     partnersSection: {
       title: "Our Trusted Partners",
       subtitle: "Collaborating with the best to provide top-notch care.",
-      image: "/partners/nano_banana.png",
+      image: "/Our Partners.png",
       partners: [
         "Nano Banana",
         "Himalayan Care",
@@ -585,7 +585,7 @@ export const CONTENT: Record<Language, ContentData> = {
     partnersSection: {
       title: "हाम्रा विश्वासिला साझेदारहरू",
       subtitle: "उत्कृष्ट सेवा प्रदान गर्न हामी उत्कृष्ट संस्थाहरू सँग सहकार्य गर्छौं।",
-      image: "/partners/nano_banana.png",
+      image: "/Our Partners.png",
       partners: [
         "Nano Banana",
         "हिमालयन केयर",
