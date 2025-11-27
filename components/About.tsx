@@ -33,6 +33,11 @@ const About: React.FC<AboutProps> = ({ content }) => {
           >
             {content.about.missionText}
           </motion.p>
+          <div className="mt-10">
+            <span className="inline-flex items-center rounded-full bg-brand-orange/10 px-4 py-1 text-sm font-medium text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+              {content.about.missionTitle}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -68,7 +73,7 @@ const About: React.FC<AboutProps> = ({ content }) => {
           >
             <div className="absolute inset-0 bg-brand-teal/10 transform rotate-3 rounded-2xl"></div>
             <img
-              src="/mission-hero.png"
+              src="/about-hero.png"
               alt="Elderly couple in garden"
               className="relative rounded-2xl shadow-2xl w-full h-auto object-cover transform -rotate-3 hover:rotate-0 transition-transform duration-500"
             />

@@ -95,7 +95,7 @@ const Process: React.FC<ProcessProps> = ({ content }) => {
             transition={{ duration: 0.8 }}
             className="flex items-center justify-center"
           >
-            <img src="/service-health.png" alt="Training" className="rounded-2xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-300 object-cover w-full h-80" />
+            <img src="/quality-assurance-nepali.png" alt="Training" className="rounded-2xl shadow-xl rotate-2 hover:rotate-0 transition-transform duration-300 object-cover w-full h-80" />
           </motion.div>
         </div>
 

@@ -31,7 +31,7 @@ const Features: React.FC<FeaturesProps> = ({ content }) => {
                         transition={{ duration: 0.8 }}
                         className="lg:w-1/2"
                     >
-                        <img src="/nepali_elderly_care_hero.png" alt="About MAPI" className="rounded-3xl shadow-2xl w-full object-cover h-96" />
+                        <img src="/about-hero.png" alt="About MAPI" className="rounded-3xl shadow-2xl w-full object-cover h-96" />
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
