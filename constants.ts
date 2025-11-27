@@ -118,6 +118,17 @@ export const CONTENT: Record<Language, ContentData> = {
         }
       ]
     },
+    partnersSection: {
+      title: "Our Trusted Partners",
+      subtitle: "Collaborating with the best to provide top-notch care.",
+      image: "/partners/nano_banana.png",
+      partners: [
+        "Nano Banana",
+        "Himalayan Care",
+        "Kathmandu Meds",
+        "Nepal Life Insurance"
+      ]
+    },
     serviceTestimonials: [
       {
         name: "Aayush K.",
@@ -569,6 +580,17 @@ export const CONTENT: Record<Language, ContentData> = {
           quote: "यो सेवा मात्र होइन, परिवारको सदस्य जस्तै हो। साथीले ममीलाई जुम चलाउन सिकाउनुभयो, अब हामी धेरै कुरा गर्न सक्छौं।",
           image: "https://randomuser.me/api/portraits/women/3.jpg"
         }
+      ]
+    },
+    partnersSection: {
+      title: "हाम्रा विश्वासिला साझेदारहरू",
+      subtitle: "उत्कृष्ट सेवा प्रदान गर्न हामी उत्कृष्ट संस्थाहरू सँग सहकार्य गर्छौं।",
+      image: "/partners/nano_banana.png",
+      partners: [
+        "Nano Banana",
+        "हिमालयन केयर",
+        "काठमाडौं मेड्स",
+        "नेपाल लाइफ इन्स्योरेन्स"
       ]
     },
     serviceTestimonials: [

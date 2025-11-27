@@ -3,6 +3,7 @@ import React from 'react';
 import { ContentData, UserRole } from '../types';
 import { Lock, Mail, User } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 interface AuthProps {
   content: ContentData;
@@ -11,7 +12,7 @@ interface AuthProps {
   onSwitchMode: (mode: 'login' | 'register') => void;
 }
 
-const Auth: React.FC<AuthProps> = ({ content, initialMode, onAuthSuccess, onSwitchMode }) => {
+const Auth: React.FC<AuthProps> = ({ content, initialMode, onAuthSuccess }) => {
   const isLogin = initialMode === 'login';
 
   const handleSubmit = (e: React.FormEvent, role: UserRole = 'family') => {
@@ -152,12 +153,12 @@ const Auth: React.FC<AuthProps> = ({ content, initialMode, onAuthSuccess, onSwit
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             {isLogin ? content.auth.noAccount : content.auth.haveAccount}{' '}
-            <button
-              onClick={() => onSwitchMode(isLogin ? 'register' : 'login')}
+            <Link
+              to={isLogin ? '/register' : '/login'}
               className="font-medium text-brand-teal hover:text-teal-700 underline transition-colors"
             >
               {isLogin ? content.auth.registerLink : content.auth.loginLink}
-            </button>
+            </Link>
           </p>
         </div>
       </motion.div>

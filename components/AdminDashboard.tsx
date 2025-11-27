@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import { ContentData } from '../types';
 import { Users, DollarSign, Activity, Calendar, ClipboardList, Briefcase, RefreshCw, UserPlus, CreditCard, ChevronRight, CheckCircle, Truck, Stethoscope } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AdminDashboardProps {
   content: ContentData;
@@ -65,44 +65,49 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
     setAssigningType(null);
   };
 
+  const tabVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, x: -20, transition: { duration: 0.2 } }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
         return (
-          <>
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-                <div className="p-3 bg-blue-100 rounded-lg text-blue-600"><Users className="h-6 w-6" /></div>
-                <div>
-                  <p className="text-sm text-gray-500">{content.adminDashboard.overview.totalUsers}</p>
-                  <p className="text-2xl font-bold text-gray-900">1,240</p>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-                <div className="p-3 bg-green-100 rounded-lg text-green-600"><DollarSign className="h-6 w-6" /></div>
-                <div>
-                  <p className="text-sm text-gray-500">{content.adminDashboard.overview.monthlyRevenue}</p>
-                  <p className="text-2xl font-bold text-gray-900">NPR 4.2M</p>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-                <div className="p-3 bg-brand-orange/20 rounded-lg text-brand-orange"><Activity className="h-6 w-6" /></div>
-                <div>
-                  <p className="text-sm text-gray-500">{content.adminDashboard.overview.activeProviders}</p>
-                  <p className="text-2xl font-bold text-gray-900">45</p>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-                <div className="p-3 bg-purple-100 rounded-lg text-purple-600"><Calendar className="h-6 w-6" /></div>
-                <div>
-                  <p className="text-sm text-gray-500">{content.adminDashboard.overview.recentBookings}</p>
-                  <p className="text-2xl font-bold text-gray-900">12</p>
-                </div>
-              </div>
+              {[
+                { icon: Users, color: 'blue', label: content.adminDashboard.overview.totalUsers, value: '1,240' },
+                { icon: DollarSign, color: 'green', label: content.adminDashboard.overview.monthlyRevenue, value: 'NPR 4.2M' },
+                { icon: Activity, color: 'orange', label: content.adminDashboard.overview.activeProviders, value: '45' },
+                { icon: Calendar, color: 'purple', label: content.adminDashboard.overview.recentBookings, value: '12' }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4 hover:shadow-md transition-shadow"
+                >
+                  <div className={`p-3 bg-${item.color}-100 rounded-lg text-${item.color}-600`}>
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">{item.label}</p>
+                    <p className="text-2xl font-bold text-gray-900">{item.value}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              >
                 <h3 className="font-bold text-gray-900 mb-4">{content.adminDashboard.assignments.subscriptionTitle}</h3>
                 <ul className="space-y-3">
                   {subscriptions.filter(s => !s.assignedTo).slice(0, 3).map(sub => (
@@ -118,8 +123,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                   ))}
                   {subscriptions.filter(s => !s.assignedTo).length === 0 && <p className="text-gray-400 italic">No pending assignments</p>}
                 </ul>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+              >
                 <h3 className="font-bold text-gray-900 mb-4">{content.adminDashboard.payments.historyTitle}</h3>
                 <ul className="space-y-3">
                   {payments.slice(0, 3).map(pay => (
@@ -132,22 +142,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             </div>
-          </>
+          </motion.div>
         );
 
       case 'staff':
         return (
-          <div className="space-y-6">
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold text-gray-900">{content.adminDashboard.staff.title}</h2>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowAddStaffModal(true)}
                 className="flex items-center gap-2 bg-brand-teal text-white px-4 py-2 rounded-lg hover:bg-teal-800 transition-colors"
               >
                 <UserPlus className="h-4 w-4" /> {content.adminDashboard.staff.addBtn}
-              </button>
+              </motion.button>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -162,7 +174,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {staff.map((member) => (
-                    <tr key={member.id} className="hover:bg-gray-50">
+                    <tr key={member.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4 font-medium text-gray-900">{member.name}</td>
                       <td className="px-6 py-4 text-gray-600 flex items-center gap-2">
                         {member.role === 'Care Provider' ? <Stethoscope className="h-4 w-4 text-brand-teal" /> : <Truck className="h-4 w-4 text-brand-orange" />}
@@ -180,46 +192,62 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
               </table>
             </div>
 
-            {showAddStaffModal && (
-              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                <div className="bg-white rounded-xl p-6 w-full max-w-md">
-                  <h3 className="text-lg font-bold mb-4">{content.adminDashboard.staff.addBtn}</h3>
-                  <form onSubmit={handleAddStaff} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.name}</label>
-                      <input name="name" required className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.role}</label>
-                      <select name="role" className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal">
-                        <option value="Care Provider">Care Provider</option>
-                        <option value="Driver">Driver</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.contact}</label>
-                      <input name="contact" required className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal" />
-                    </div>
-                    <div className="flex gap-3 mt-6">
-                      <button type="button" onClick={() => setShowAddStaffModal(false)} className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
-                      <button type="submit" className="flex-1 py-2 bg-brand-teal text-white rounded-lg hover:bg-teal-800">{content.adminDashboard.staff.save}</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
-          </div>
+            <AnimatePresence>
+              {showAddStaffModal && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl"
+                  >
+                    <h3 className="text-lg font-bold mb-4">{content.adminDashboard.staff.addBtn}</h3>
+                    <form onSubmit={handleAddStaff} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.name}</label>
+                        <input name="name" required className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal transition-all" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.role}</label>
+                        <select name="role" className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal transition-all">
+                          <option value="Care Provider">Care Provider</option>
+                          <option value="Driver">Driver</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">{content.adminDashboard.staff.contact}</label>
+                        <input name="contact" required className="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-teal focus:border-brand-teal transition-all" />
+                      </div>
+                      <div className="flex gap-3 mt-6">
+                        <button type="button" onClick={() => setShowAddStaffModal(false)} className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                        <button type="submit" className="flex-1 py-2 bg-brand-teal text-white rounded-lg hover:bg-teal-800 transition-colors">{content.adminDashboard.staff.save}</button>
+                      </div>
+                    </form>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         );
 
       case 'assignments':
         return (
-          <div className="space-y-8">
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="space-y-8">
             {/* Subscriptions */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">{content.adminDashboard.assignments.subscriptionTitle}</h2>
               <div className="space-y-4">
                 {subscriptions.map(sub => (
-                  <div key={sub.id} className="flex flex-col md:flex-row justify-between items-center p-4 border border-gray-100 rounded-lg hover:bg-gray-50">
+                  <motion.div
+                    layout
+                    key={sub.id}
+                    className="flex flex-col md:flex-row justify-between items-center p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
                     <div className="mb-2 md:mb-0">
                       <p className="font-bold text-gray-900">{sub.user}</p>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -248,14 +276,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                         ) : (
                           <button
                             onClick={() => { setAssigningId(sub.id); setAssigningType('provider'); }}
-                            className="px-4 py-2 border border-brand-teal text-brand-teal rounded-lg hover:bg-teal-50 font-medium w-full md:w-auto"
+                            className="px-4 py-2 border border-brand-teal text-brand-teal rounded-lg hover:bg-teal-50 font-medium w-full md:w-auto transition-colors"
                           >
                             {content.adminDashboard.assignments.assignProvider}
                           </button>
                         )
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -265,7 +293,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
               <h2 className="text-xl font-bold text-gray-900 mb-4">{content.adminDashboard.assignments.groceryTitle}</h2>
               <div className="space-y-4">
                 {orders.map(order => (
-                  <div key={order.id} className="flex flex-col md:flex-row justify-between items-center p-4 border border-gray-100 rounded-lg hover:bg-gray-50">
+                  <motion.div
+                    layout
+                    key={order.id}
+                    className="flex flex-col md:flex-row justify-between items-center p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
                     <div className="mb-2 md:mb-0">
                       <p className="font-bold text-gray-900">{order.user}</p>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -294,23 +326,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                         ) : (
                           <button
                             onClick={() => { setAssigningId(order.id); setAssigningType('driver'); }}
-                            className="px-4 py-2 border border-brand-orange text-brand-orange rounded-lg hover:bg-orange-50 font-medium w-full md:w-auto"
+                            className="px-4 py-2 border border-brand-orange text-brand-orange rounded-lg hover:bg-orange-50 font-medium w-full md:w-auto transition-colors"
                           >
                             {content.adminDashboard.assignments.assignDriver}
                           </button>
                         )
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         );
 
       case 'payments':
         return (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-xl font-bold text-gray-900">{content.adminDashboard.payments.title}</h2>
             </div>
@@ -326,7 +358,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {payments.map((pay) => (
-                  <tr key={pay.id} className="hover:bg-gray-50">
+                  <tr key={pay.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-gray-900">{pay.user}</td>
                     <td className="px-6 py-4 font-bold text-gray-800">{pay.amount}</td>
                     <td className="px-6 py-4 text-gray-600">{pay.date}</td>
@@ -344,14 +376,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                 ))}
               </tbody>
             </table>
-          </div>
+          </motion.div>
         );
 
       case 'renewals':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {renewals.map(item => (
-              <div key={item.id} className="bg-white rounded-xl shadow-sm border border-red-100 p-6 relative overflow-hidden">
+          <motion.div variants={tabVariants} initial="hidden" animate="visible" exit="exit" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {renewals.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white rounded-xl shadow-sm border border-red-100 p-6 relative overflow-hidden hover:shadow-md transition-shadow"
+              >
                 <div className="absolute top-0 right-0 bg-red-500 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">
                   Expires in {item.daysLeft} days
                 </div>
@@ -363,13 +401,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
                   <Calendar className="h-4 w-4" />
                   Expiry: {item.expiryDate}
                 </div>
-                <button className="w-full py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2">
+                <button className="w-full py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors">
                   <RefreshCw className="h-4 w-4" />
                   {content.adminDashboard.renewals.action}
                 </button>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         );
 
       default:
@@ -386,36 +424,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
           <h1 className="text-xl font-bold text-brand-teal">Admin Panel</h1>
         </div>
         <nav className="p-4 space-y-2">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${activeTab === 'overview' ? 'bg-brand-teal text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <Activity className="h-5 w-5" /> {content.adminDashboard.nav.overview}
-          </button>
-          <button
-            onClick={() => setActiveTab('staff')}
-            className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${activeTab === 'staff' ? 'bg-brand-teal text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <Briefcase className="h-5 w-5" /> {content.adminDashboard.nav.staff}
-          </button>
-          <button
-            onClick={() => setActiveTab('assignments')}
-            className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${activeTab === 'assignments' ? 'bg-brand-teal text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <ClipboardList className="h-5 w-5" /> {content.adminDashboard.nav.assignments}
-          </button>
-          <button
-            onClick={() => setActiveTab('payments')}
-            className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${activeTab === 'payments' ? 'bg-brand-teal text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <DollarSign className="h-5 w-5" /> {content.adminDashboard.nav.payments}
-          </button>
-          <button
-            onClick={() => setActiveTab('renewals')}
-            className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${activeTab === 'renewals' ? 'bg-brand-teal text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-          >
-            <RefreshCw className="h-5 w-5" /> {content.adminDashboard.nav.renewals}
-          </button>
+          {[
+            { id: 'overview', icon: Activity, label: content.adminDashboard.nav.overview },
+            { id: 'staff', icon: Briefcase, label: content.adminDashboard.nav.staff },
+            { id: 'assignments', icon: ClipboardList, label: content.adminDashboard.nav.assignments },
+            { id: 'payments', icon: DollarSign, label: content.adminDashboard.nav.payments },
+            { id: 'renewals', icon: RefreshCw, label: content.adminDashboard.nav.renewals }
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id as Tab)}
+              className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-all ${activeTab === item.id ? 'bg-brand-teal text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              <item.icon className="h-5 w-5" /> {item.label}
+            </button>
+          ))}
         </nav>
       </div>
 
@@ -432,7 +455,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ content }) => {
             </h2>
             <div className="text-sm text-gray-500">{new Date().toDateString()}</div>
           </div>
-          {renderContent()}
+          <AnimatePresence mode="wait">
+            {renderContent()}
+          </AnimatePresence>
         </div>
       </div>
     </div>

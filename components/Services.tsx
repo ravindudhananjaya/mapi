@@ -148,7 +148,7 @@ const Services: React.FC<ServicesProps> = ({ content, onSelectPlan, onSelectServ
         </div>
 
         {/* One Time Services */}
-        <div className="mt-32">
+        <div id="onetime" className="mt-32">
           <div className="text-center mb-16">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">{content.pricing.oneTimeTitle}</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">Flexible options for when you need specific help without a monthly commitment.</p>

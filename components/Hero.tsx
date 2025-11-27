@@ -1,7 +1,8 @@
 import React from 'react';
 import { ContentData } from '../types';
-import { ChevronRight, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroProps {
   content: ContentData;
@@ -9,6 +10,16 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ content, onCtaClick }) => {
+  const navigate = useNavigate();
+
+  const handleCtaClick = () => {
+    if (onCtaClick) {
+      onCtaClick();
+    } else {
+      navigate('/services');
+    }
+  };
+
   return (
     <div className="relative bg-brand-light overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -48,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ content, onCtaClick }) => {
               >
                 <div className="rounded-md shadow">
                   <button
-                    onClick={onCtaClick}
+                    onClick={handleCtaClick}
                     className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-brand-teal hover:bg-teal-700 md:py-4 md:text-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
                     {content.hero.cta}
@@ -56,7 +67,7 @@ const Hero: React.FC<HeroProps> = ({ content, onCtaClick }) => {
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
                   <button
-                    onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => navigate('/services')}
                     className="w-full flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg transition-all hover:shadow-md"
                   >
                     View Services

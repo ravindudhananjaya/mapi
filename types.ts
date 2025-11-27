@@ -4,7 +4,7 @@ export enum Language {
   NP = 'NP'
 }
 
-export type Page = 'home' | 'services' | 'about' | 'contact' | 'login' | 'register' | 'checkout' | 'payment-success' | 'dashboard' | 'admin-dashboard' | 'provider-dashboard' | 'driver-dashboard';
+export type Page = 'home' | 'services' | 'about' | 'contact' | 'login' | 'register' | 'checkout' | 'payment-success' | 'dashboard' | 'admin-dashboard' | 'provider-dashboard' | 'driver-dashboard' | 'service-info' | 'service-selection' | 'subscription-plans' | 'onetime-services' | 'settings' | 'book-service' | 'book-subscription' | 'book-onetime';
 
 export type UserRole = 'family' | 'provider' | 'driver' | 'admin';
 
@@ -18,6 +18,16 @@ export interface User {
   address?: string;
   phone?: string;
   notes?: string;
+}
+
+export interface ServiceInfo {
+  patientName: string;
+  age: string;
+  gender: string;
+  address: string;
+  phone: string;
+  medicalConditions?: string;
+  emergencyContact: string;
 }
 
 export interface Visit {
@@ -155,6 +165,12 @@ export interface ContentData {
     image: string;
     role: string;
   }[];
+  partnersSection: {
+    title: string;
+    subtitle: string;
+    image: string;
+    partners: string[];
+  };
   process: {
     title: string;
     subtitle: string;
