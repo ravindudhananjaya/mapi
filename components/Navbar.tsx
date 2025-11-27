@@ -20,21 +20,19 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
     setLang(lang === Language.EN ? Language.NP : Language.EN);
   };
 
-  const navLinkClass = (page: Page) => 
-    `px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${
-      currentPage === page ? 'text-brand-orange font-bold' : 'text-gray-600 hover:text-brand-orange'
+  const navLinkClass = (page: Page) =>
+    `px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${currentPage === page ? 'text-brand-orange font-bold' : 'text-gray-600 hover:text-brand-orange'
     }`;
 
   const mobileNavLinkClass = (page: Page) =>
-    `block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${
-      currentPage === page ? 'text-brand-orange bg-orange-50' : 'text-gray-700 hover:text-brand-orange hover:bg-gray-50'
+    `block px-3 py-2 rounded-md text-base font-medium cursor-pointer ${currentPage === page ? 'text-brand-orange bg-orange-50' : 'text-gray-700 hover:text-brand-orange hover:bg-gray-50'
     }`;
 
   const getDashboardPage = () => {
-      if (user?.role === 'admin') return 'admin-dashboard';
-      if (user?.role === 'provider') return 'provider-dashboard';
-      if (user?.role === 'driver') return 'driver-dashboard';
-      return 'dashboard';
+    if (user?.role === 'admin') return 'admin-dashboard';
+    if (user?.role === 'provider') return 'provider-dashboard';
+    if (user?.role === 'driver') return 'driver-dashboard';
+    return 'dashboard';
   };
 
   return (
@@ -43,22 +41,19 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
         <div className="flex justify-between h-20">
           <div className="flex items-center cursor-pointer" onClick={() => setCurrentPage('home')}>
             <div className="flex-shrink-0 flex items-center gap-2">
-              <div className="bg-brand-orange p-2 rounded-full">
-                <HeartHandshake className="h-8 w-8 text-white" />
-              </div>
-              <span className="font-bold text-3xl text-brand-teal tracking-tight">MAPI</span>
+              <img src="/logo.png" alt="MAPI Logo" className="h-12 w-auto" />
             </div>
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
             <button onClick={() => setCurrentPage('home')} className={navLinkClass('home')}>{content.nav.home}</button>
             {user?.role !== 'admin' && user?.role !== 'provider' && user?.role !== 'driver' && (
-                <button onClick={() => setCurrentPage('services')} className={navLinkClass('services')}>{content.nav.services}</button>
+              <button onClick={() => setCurrentPage('services')} className={navLinkClass('services')}>{content.nav.services}</button>
             )}
             <button onClick={() => setCurrentPage('about')} className={navLinkClass('about')}>{content.nav.about}</button>
             <button onClick={() => setCurrentPage('contact')} className={navLinkClass('contact')}>{content.nav.contact}</button>
-            
-            <button 
+
+            <button
               onClick={toggleLang}
               className="flex items-center space-x-1 text-gray-700 hover:text-brand-teal border border-gray-300 rounded-full px-3 py-1"
             >
@@ -67,23 +62,23 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
             </button>
 
             {user ? (
-               <div className="flex items-center gap-4">
-                  <button 
-                    onClick={() => setCurrentPage(getDashboardPage())}
-                    className="flex items-center gap-2 text-brand-teal hover:text-teal-800 font-medium"
-                  >
-                    <UserCircle className="h-6 w-6" />
-                    <span>{content.nav.dashboard}</span>
-                  </button>
-                  <button 
-                    onClick={onLogout}
-                    className="text-gray-500 hover:text-gray-700 text-sm font-medium"
-                  >
-                    {content.nav.logout}
-                  </button>
-               </div>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setCurrentPage(getDashboardPage())}
+                  className="flex items-center gap-2 text-brand-teal hover:text-teal-800 font-medium"
+                >
+                  <UserCircle className="h-6 w-6" />
+                  <span>{content.nav.dashboard}</span>
+                </button>
+                <button
+                  onClick={onLogout}
+                  className="text-gray-500 hover:text-gray-700 text-sm font-medium"
+                >
+                  {content.nav.logout}
+                </button>
+              </div>
             ) : (
-              <button 
+              <button
                 onClick={() => setCurrentPage('login')}
                 className="bg-brand-teal text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-teal-900 transition-colors shadow-md hover:shadow-lg"
               >
@@ -93,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
           </div>
 
           <div className="flex items-center md:hidden gap-4">
-             <button 
+            <button
               onClick={toggleLang}
               className="flex items-center space-x-1 text-gray-700 border border-gray-300 rounded-full px-2 py-1"
             >
@@ -117,14 +112,14 @@ const Navbar: React.FC<NavbarProps> = ({ content, lang, setLang, currentPage, se
             <button onClick={() => { setCurrentPage('services'); setIsOpen(false); }} className={mobileNavLinkClass('services')}>{content.nav.services}</button>
             <button onClick={() => { setCurrentPage('about'); setIsOpen(false); }} className={mobileNavLinkClass('about')}>{content.nav.about}</button>
             <button onClick={() => { setCurrentPage('contact'); setIsOpen(false); }} className={mobileNavLinkClass('contact')}>{content.nav.contact}</button>
-            
+
             {user ? (
-               <>
-                 <button onClick={() => { setCurrentPage(getDashboardPage()); setIsOpen(false); }} className={mobileNavLinkClass('dashboard')}>{content.nav.dashboard}</button>
-                 <button onClick={() => { onLogout(); setIsOpen(false); }} className="block w-full text-left px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-800">{content.nav.logout}</button>
-               </>
+              <>
+                <button onClick={() => { setCurrentPage(getDashboardPage()); setIsOpen(false); }} className={mobileNavLinkClass('dashboard')}>{content.nav.dashboard}</button>
+                <button onClick={() => { onLogout(); setIsOpen(false); }} className="block w-full text-left px-3 py-2 text-base font-medium text-gray-500 hover:text-gray-800">{content.nav.logout}</button>
+              </>
             ) : (
-              <button 
+              <button
                 onClick={() => { setCurrentPage('login'); setIsOpen(false); }}
                 className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-brand-teal font-bold hover:bg-gray-50"
               >

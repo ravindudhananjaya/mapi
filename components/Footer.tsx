@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentData } from '../types';
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, CreditCard } from 'lucide-react';
 
 interface FooterProps {
   content: ContentData;
@@ -12,25 +12,22 @@ const Footer: React.FC<FooterProps> = ({ content }) => {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
-             <div className="flex items-center gap-2">
-                <div className="bg-brand-orange p-1.5 rounded-full">
-                    <div className="h-6 w-6 rounded-full border-2 border-white"></div>
-                </div>
-                <span className="font-bold text-2xl tracking-tight">MAPI</span>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="MAPI Logo" className="h-10 w-auto brightness-0 invert" />
             </div>
             <p className="text-gray-300 text-base">
               {content.footer.tagline}
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <span className="sr-only">Facebook</span>
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <span className="sr-only">Instagram</span>
                 <Instagram className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <span className="sr-only">LinkedIn</span>
                 <Linkedin className="h-6 w-6" />
               </a>
@@ -41,10 +38,10 @@ const Footer: React.FC<FooterProps> = ({ content }) => {
               <div>
                 <h3 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">{content.nav.services}</h3>
                 <ul role="list" className="mt-4 space-y-4">
-                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Basic Care</a></li>
-                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Standard Care</a></li>
-                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Premium Care</a></li>
-                  <li><a href="#" className="text-base text-gray-300 hover:text-white">Transportation</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white transition-colors">Basic Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white transition-colors">Standard Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white transition-colors">Premium Care</a></li>
+                  <li><a href="#" className="text-base text-gray-300 hover:text-white transition-colors">Transportation</a></li>
                 </ul>
               </div>
               <div className="mt-12 md:mt-0">
@@ -67,10 +64,15 @@ const Footer: React.FC<FooterProps> = ({ content }) => {
             </div>
           </div>
         </div>
-        <div className="mt-12 border-t border-teal-800 pt-8">
-          <p className="text-base text-gray-400 xl:text-center">
+        <div className="mt-12 border-t border-teal-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-base text-gray-400">
             {content.footer.copyright}
           </p>
+          <div className="flex items-center gap-4 opacity-50 grayscale hover:grayscale-0 transition-all">
+            <div className="flex items-center gap-1 text-white font-bold text-xs bg-white/10 px-2 py-1 rounded"><span className="italic">VISA</span></div>
+            <div className="flex items-center gap-1 text-white font-bold text-xs bg-white/10 px-2 py-1 rounded"><span>Mastercard</span></div>
+            <div className="flex items-center gap-1 text-white font-bold text-xs bg-white/10 px-2 py-1 rounded"><span>eSewa</span></div>
+          </div>
         </div>
       </div>
     </footer>

@@ -13,11 +13,134 @@ export const CONTENT: Record<Language, ContentData> = {
       logout: "Logout"
     },
     hero: {
-      title: "Professional Elderly Care for Your Parents in Nepal",
-      subtitle: "Bridging the distance. We provide transportation, health monitoring, and companionship for your loved ones while you work abroad.",
-      cta: "View Care Packages",
-      trust: "Trusted by families in UAE, USA, Australia, UK & Qatar"
+      title: "Care that feels like family, even when you're far away.",
+      subtitle: "We connect your parents in Nepal with trusted 'Saathis' (Companions) for health support, daily assistance, and social connection.",
+      cta: "Find a Saathi",
+      trust: "Trusted by 500+ Nepali families in USA, Australia, UK & UAE"
     },
+    landingServices: {
+      title: "More than just care. It's companionship.",
+      subtitle: "Our 'Saathis' provide the support your parents need to live happily and independently at home.",
+      services: [
+        {
+          title: "Companionship (Saathi)",
+          description: "Friendly visits to share tea, stories, and walks. No more loneliness.",
+          icon: "heart"
+        },
+        {
+          title: "Health Support",
+          description: "Hospital visits, medicine reminders, and regular BP/Sugar monitoring.",
+          icon: "stethoscope"
+        },
+        {
+          title: "Daily Assistance",
+          description: "Help with groceries, technology, bill payments, and errands.",
+          icon: "shopping-bag"
+        },
+        {
+          title: "Emergency Support",
+          description: "24/7 on-call coordination with local hospitals and ambulance services.",
+          icon: "phone-call"
+        }
+      ]
+    },
+    detailedServices: {
+      title: "Comprehensive Care Services",
+      subtitle: "We offer a wide range of services designed to ensure the well-being and happiness of your loved ones.",
+      items: [
+        {
+          title: "Companionship & Emotional Support",
+          description: "Loneliness is a major issue for the elderly. Our Saathis provide genuine companionship, engaging in conversations, playing games, or simply sharing a cup of tea. We treat your parents like our own family.",
+          image: "/about-hero.png",
+          benefits: ["Reduced loneliness and isolation", "Mental stimulation through conversation", "Emotional support and friendship"]
+        },
+        {
+          title: "Professional Health Monitoring",
+          description: "Our trained care providers assist with medication management, accompany parents to hospital visits, and monitor vital signs like Blood Pressure and Sugar levels regularly.",
+          image: "/service-health.png",
+          benefits: ["Regular health tracking", "Medication adherence", "Stress-free hospital visits"]
+        },
+        {
+          title: "Daily Living Assistance",
+          description: "From grocery shopping to paying utility bills, we handle the daily chores that can become burdensome. We also help with technology, ensuring they can video call you easily.",
+          image: "/service-daily.png",
+          benefits: ["Hassle-free grocery shopping", "Timely bill payments", "Technology assistance"]
+        }
+      ]
+    },
+    appShowcase: {
+      title: "Stay connected from miles away",
+      subtitle: "Our app bridges the distance between you and your parents.",
+      features: [
+        {
+          title: "Real-time Updates",
+          description: "Get notified instantly when a Saathi arrives and completes a visit.",
+          icon: "bell"
+        },
+        {
+          title: "Health Vitals Dashboard",
+          description: "View blood pressure, sugar levels, and other vitals in easy-to-read charts.",
+          icon: "activity"
+        },
+        {
+          title: "Photo & Video Feed",
+          description: "See your parents smiling with photos and videos from every visit.",
+          icon: "camera"
+        },
+        {
+          title: "Direct Chat",
+          description: "Message the care provider directly for any special instructions.",
+          icon: "message-circle"
+        }
+      ]
+    },
+    testimonials: {
+      title: "Peace of mind for you, joy for them.",
+      subtitle: "Hear from children living abroad who trust MAPI.",
+      items: [
+        {
+          name: "Sujata K.",
+          location: "Sydney, Australia",
+          quote: "I used to worry every day about my mom being alone in Kathmandu. Now, her Saathi visits 3 times a week. Mom is happier, and I can sleep better.",
+          image: "https://randomuser.me/api/portraits/women/1.jpg"
+        },
+        {
+          name: "Rajesh S.",
+          location: "New York, USA",
+          quote: "The health updates on the app are a game changer. I know exactly when dad takes his meds and what his BP is. Thank you MAPI!",
+          image: "https://randomuser.me/api/portraits/men/2.jpg"
+        },
+        {
+          name: "Priya M.",
+          location: "London, UK",
+          quote: "It's not just a service, it's like having a family member there. The Saathi even helped mom set up Zoom so we can talk more often.",
+          image: "https://randomuser.me/api/portraits/women/3.jpg"
+        }
+      ]
+    },
+    serviceTestimonials: [
+      {
+        name: "Aayush K.",
+        location: "Melbourne, Australia",
+        quote: "MAPI has been a lifesaver. Being a student, I couldn't visit home often, but the daily updates make me feel connected.",
+        image: "/avatar-1.png",
+        role: "Student"
+      },
+      {
+        name: "Sarita B.",
+        location: "Texas, USA",
+        quote: "The health monitoring service is excellent. I get the BP reports instantly on WhatsApp and the App.",
+        image: "/avatar-3.png",
+        role: "Software Engineer"
+      },
+      {
+        name: "Rohan M.",
+        location: "Dubai, UAE",
+        quote: "Trustworthy and professional. My parents love their Saathi!",
+        image: "/avatar-2.png",
+        role: "Business Owner"
+      }
+    ],
     valueProp: {
       title: "Why Choose MAPI?",
       items: [
@@ -106,11 +229,11 @@ export const CONTENT: Record<Language, ContentData> = {
       problemText: "Elderly people in Nepal are often left without adequate care as younger family members work abroad, creating a gap in daily assistance, healthcare monitoring, and social connection.",
       teamTitle: "Our Core Team",
       team: [
-        "Operations Manager",
-        "Care Coordinators",
-        "Trained Care Providers",
-        "Healthcare Professionals (Consultants)",
-        "Customer Support"
+        { name: "Aarav Sharma", role: "Operations Manager", image: "/avatar-2.png" },
+        { name: "Sita Poudel", role: "Senior Care Coordinator", image: "/avatar-1.png" },
+        { name: "Gita Rai", role: "Head Nurse", image: "/avatar-3.png" },
+        { name: "Dr. Ram Thapa", role: "Medical Consultant", image: "/avatar-2.png" },
+        { name: "Nita KC", role: "Customer Support", image: "/avatar-1.png" }
       ],
       differentiationTitle: "Why MAPI Will Win",
       differentiationPoints: [
@@ -121,8 +244,23 @@ export const CONTENT: Record<Language, ContentData> = {
       ]
     },
     process: {
-      title: "Our Quality Assurance",
-      trainingTitle: "Care Provider Training Program (1 Week)",
+      title: "How it works",
+      subtitle: "Getting started is simple and transparent.",
+      steps: [
+        {
+          title: "1. Register & Select Plan",
+          description: "Create an account and choose the care package that best fits your parents' needs."
+        },
+        {
+          title: "2. Select Subscription Service",
+          description: "Choose from our Basic, Standard, or Premium monthly subscriptions for continuous care."
+        },
+        {
+          title: "3. Enjoy Peace of Mind",
+          description: "Receive real-time updates, visit videos, and detailed health reports directly on the app."
+        }
+      ],
+      trainingTitle: "Our Quality Assurance",
       trainingPoints: [
         "Elderly care basics & cultural sensitivity",
         "Health monitoring procedures (BP, Sugar)",
@@ -328,11 +466,134 @@ export const CONTENT: Record<Language, ContentData> = {
       logout: "लगआउट"
     },
     hero: {
-      title: "तपाईं टाढा हुँदा पनि, बुबाआमाको साथमा हामी छौं",
-      subtitle: "नेपालमा व्यावसायिक ज्येष्ठ नागरिक हेरचाह सेवा। यातायात, स्वास्थ्य जाँच, र साथीको रूपमा सहयोग।",
-      cta: "हेरचाह प्याकेजहरू हेर्नुहोस्",
-      trust: "विदेशमा रहेका सयौं नेपाली परिवारहरूको विश्वासिलो साथी"
+      title: "तपाईं टाढा भए पनि, बुबाआमाको साथमा हामी छौं",
+      subtitle: "हामी तपाईंका आमाबुबालाई 'साथी' (Saathi) सँग जोड्छौं, जसले स्वास्थ्य सहयोग, दैनिक सहायता र भावनात्मक साथ प्रदान गर्छन्।",
+      cta: "साथी खोज्नुहोस्",
+      trust: "विदेशमा रहेका ५००+ नेपाली परिवारहरूको विश्वासिलो साथी"
     },
+    landingServices: {
+      title: "हेरचाह मात्र होइन, आत्मीय साथ।",
+      subtitle: "हाम्रा 'साथी' हरूले तपाईंका आमाबुबालाई घरमै खुशी र स्वतन्त्र भएर बाँच्न मद्दत गर्छन्।",
+      services: [
+        {
+          title: "साथी (Companionship)",
+          description: "चिया गफ, रमाइलो कुराकानी र हिँडडुल। अब एक्लोपन हट्छ।",
+          icon: "heart"
+        },
+        {
+          title: "स्वास्थ्य सहयोग",
+          description: "अस्पताल जान सहयोग, औषधि समयमा खुवाउने र प्रेसर/सुगर जाँच।",
+          icon: "stethoscope"
+        },
+        {
+          title: "दैनिक सहायता",
+          description: "किराना किनमेल, मोबाइल चलाउन सिकाउने, र बिल भुक्तानीमा सहयोग।",
+          icon: "shopping-bag"
+        },
+        {
+          title: "आकस्मिक सेवा",
+          description: "२४/७ अस्पताल र एम्बुलेन्ससँग समन्वय।",
+          icon: "phone-call"
+        }
+      ]
+    },
+    detailedServices: {
+      title: "विस्तृत सेवाहरू",
+      subtitle: "हामी तपाईंका प्रियजनहरूको सुख र स्वास्थ्य सुनिश्चित गर्न विभिन्न सेवाहरू प्रदान गर्दछौं।",
+      items: [
+        {
+          title: "साथी र भावनात्मक सहयोग",
+          description: "वृद्धावस्थामा एक्लोपन एउटा ठूलो समस्या हो। हाम्रा साथीहरूले कुराकानी गर्ने, खेल खेल्ने वा सँगै चिया पिउने जस्ता क्रियाकलाप मार्फत साँचो साथ दिन्छन्। हामी तपाईंका आमाबुबालाई आफ्नै परिवार जस्तै व्यवहार गर्छौं।",
+          image: "/about-hero.png",
+          benefits: ["एक्लोपन र निराशा कम हुने", "कुराकानी मार्फत मानसिक सक्रियता", "भावनात्मक साथ र मित्रता"]
+        },
+        {
+          title: "व्यावसायिक स्वास्थ्य निगरानी",
+          description: "हाम्रा तालिम प्राप्त केयर गिभरहरूले औषधि व्यवस्थापनमा मद्दत गर्छन्, अस्पताल जाँदा साथ दिन्छन्, र नियमित रूपमा रक्तचाप र सुगर जस्ता स्वास्थ्य सूचकहरूको निगरानी गर्छन्।",
+          image: "/service-health.png",
+          benefits: ["नियमित स्वास्थ्य ट्रयाकिङ", "समयमा औषधि सेवन", "तनावमुक्त अस्पताल भ्रमण"]
+        },
+        {
+          title: "दैनिक जीवनमा सहायता",
+          description: "किराना किनमेलदेखि बिजुलीको बिल तिर्नेसम्म, हामी दैनिक कामहरूमा सघाउँछौं। हामी प्रविधि चलाउन पनि सिकाउँछौं, जसले गर्दा उहाँहरूले तपाईंलाई सजिलै भिडियो कल गर्न सक्नुहुन्छ।",
+          image: "/service-daily.png",
+          benefits: ["झन्झटमुक्त किनमेल", "समयमा बिल भुक्तानी", "प्रविधिमा सहयोग"]
+        }
+      ]
+    },
+    appShowcase: {
+      title: "टाढा भए पनि नजिकै",
+      subtitle: "हाम्रो एपले तपाईं र तपाईंका आमाबुबा बीचको दूरी कम गर्छ।",
+      features: [
+        {
+          title: "ताजा अपडेट",
+          description: "साथी कहिले आउनुभयो र जानुभयो, तुरुन्तै थाहा पाउनुहोस्।",
+          icon: "bell"
+        },
+        {
+          title: "स्वास्थ्य ड्यासबोर्ड",
+          description: "प्रेसर, सुगर र अन्य स्वास्थ्य विवरणहरू चार्टमा हेर्नुहोस्।",
+          icon: "activity"
+        },
+        {
+          title: "फोटो र भिडियो",
+          description: "हरेक भेटघाटको फोटो र भिडियो हेरेर आमाबुबाको मुस्कान देख्नुहोस्।",
+          icon: "camera"
+        },
+        {
+          title: "सिधा कुराकानी",
+          description: "केही विशेष भन्नु परेमा केयर गिभरलाई सिधै म्यासेज गर्नुहोस्।",
+          icon: "message-circle"
+        }
+      ]
+    },
+    testimonials: {
+      title: "तपाईंलाई ढुक्क, उहाँहरूलाई खुसी।",
+      subtitle: "MAPI मा विश्वास गर्ने विदेशमा रहेका छोराछोरीहरूको अनुभव।",
+      items: [
+        {
+          name: "सुजाता के.",
+          location: "सिड्नी, अष्ट्रेलिया",
+          quote: "ममी काठमाडौंमा एक्लै हुनुहुन्छ भनेर सधैं चिन्ता लाग्थ्यो। अब 'साथी' हप्तामा ३ पटक जानुहुन्छ। ममी खुसी हुनुहुन्छ, म पनि ढुक्कले सुत्छु।",
+          image: "https://randomuser.me/api/portraits/women/1.jpg"
+        },
+        {
+          name: "राजेश एस.",
+          location: "न्यूयोर्क, अमेरिका",
+          quote: "एपमा आउने स्वास्थ्य रिपोर्टले धेरै सजिलो बनाएको छ। बुबाले औषधि खानुभयो कि भएन भनेर अब सोधिरहनु पर्दैन। धन्यवाद MAPI!",
+          image: "https://randomuser.me/api/portraits/men/2.jpg"
+        },
+        {
+          name: "प्रिया एम.",
+          location: "लन्डन, बेलायत",
+          quote: "यो सेवा मात्र होइन, परिवारको सदस्य जस्तै हो। साथीले ममीलाई जुम चलाउन सिकाउनुभयो, अब हामी धेरै कुरा गर्न सक्छौं।",
+          image: "https://randomuser.me/api/portraits/women/3.jpg"
+        }
+      ]
+    },
+    serviceTestimonials: [
+      {
+        name: "आयुष के.",
+        location: "मेलबर्न, अष्ट्रेलिया",
+        quote: "MAPI मेरो लागि वरदान साबित भएको छ। विद्यार्थी भएकोले म घर जान पाउँदिन, तर दैनिक अपडेटले मलाई नजिक महसुस गराउँछ।",
+        image: "/avatar-1.png",
+        role: "विद्यार्थी"
+      },
+      {
+        name: "सरिता बी.",
+        location: "टेक्सास, अमेरिका",
+        quote: "स्वास्थ्य निगरानी सेवा उत्कृष्ट छ। मलाई व्हाट्सएप र एपमा तुरुन्तै प्रेसर रिपोर्ट आउँछ।",
+        image: "/avatar-3.png",
+        role: "सफ्टवेयर इन्जिनियर"
+      },
+      {
+        name: "रोहन एम.",
+        location: "दुबई, यूएई",
+        quote: "विश्वासिलो र व्यावसायिक। मेरा बुबाआमाले आफ्नो साथीलाई धेरै मन पराउनुहुन्छ!",
+        image: "/avatar-2.png",
+        role: "व्यवसायी"
+      }
+    ],
     valueProp: {
       title: "MAPI नै किन?",
       items: [
@@ -421,11 +682,11 @@ export const CONTENT: Record<Language, ContentData> = {
       problemText: "रोजगारीको लागि युवा पुस्ता विदेशिँदा नेपालमा रहेका बुबाआमा एक्लै पर्नुभएको छ। दैनिक सहायता, स्वास्थ्य निगरानी र सामाजिक निकटताको अभावलाई हामी पूरा गर्छौं।",
       teamTitle: "हाम्रो टोली",
       team: [
-        "अपरेसन म्यानेजर",
-        "केयर कोअर्डिनेटरहरू",
-        "तालिम प्राप्त केयर गिभरहरू",
-        "स्वास्थ्य विशेषज्ञहरू (परामर्शदाता)",
-        "ग्राहक सेवा प्रतिनिधि"
+        { name: "आरव शर्मा", role: "अपरेसन म्यानेजर", image: "/avatar-2.png" },
+        { name: "सीता पौडेल", role: "वरिष्ठ केयर कोअर्डिनेटर", image: "/avatar-1.png" },
+        { name: "गीता राई", role: "प्रमुख नर्स", image: "/avatar-3.png" },
+        { name: "डा. राम थापा", role: "चिकित्सा परामर्शदाता", image: "/avatar-2.png" },
+        { name: "निता के.सी.", role: "ग्राहक सेवा", image: "/avatar-1.png" }
       ],
       differentiationTitle: "MAPI किन उत्कृष्ट छ?",
       differentiationPoints: [
@@ -436,8 +697,23 @@ export const CONTENT: Record<Language, ContentData> = {
       ]
     },
     process: {
-      title: "हाम्रो गुणस्तर",
-      trainingTitle: "केयर गिभर तालिम कार्यक्रम (१ हप्ता)",
+      title: "सेवा कसरी लिने?",
+      subtitle: "सुरु गर्न धेरै सजिलो छ।",
+      steps: [
+        {
+          title: "१. दर्ता र प्याकेज छनोट",
+          description: "खाता खोल्नुहोस् र आफ्ना आमाबुबाको आवश्यकता अनुसारको प्याकेज छान्नुहोस्।"
+        },
+        {
+          title: "२. सदस्यता सेवा छान्नुहोस्",
+          description: "निरन्तर हेरचाहको लागि हाम्रो आधारभूत, मानक, वा प्रिमियम मासिक सदस्यता छान्नुहोस्।"
+        },
+        {
+          title: "३. ढुक्क हुनुहोस्",
+          description: "एपमा हरेक भेटघाटको भिडियो, फोटो र विस्तृत स्वास्थ्य रिपोर्ट प्राप्त गर्नुहोस्।"
+        }
+      ],
+      trainingTitle: "हाम्रो गुणस्तर",
       trainingPoints: [
         "ज्येष्ठ नागरिक हेरचाह र सांस्कृतिक संवेदनशीलता",
         "स्वास्थ्य निगरानी प्रक्रिया (BP, सुगर)",
@@ -454,7 +730,7 @@ export const CONTENT: Record<Language, ContentData> = {
         "बीमा कम्पनीहरू"
       ],
       safetyTitle: "विश्वास र सुरक्षा",
-      safetyText: "हामी कडा ब्याकग्राउन्ड चेक, हरेक भेटघाटको GPS ट्रयाकिङ, र रियल-टाइम अपडेटहरू मार्फत पूर्ण सुरक्षा र विश्वास सुनिश्चित गर्छौं।",
+      safetyText: "हामी कडा ब्याकग्राउन्ड चेक, हरेक भेटघाटको GPS ट्रयाकिङ, र रियल-टाइम अपडेटहरू मार्फत पूर्ण सुरक्षा र विश्वास सुनिश्चित गर्छौं।"
     },
     contactPage: {
       title: "सम्पर्क गर्नुहोस्",

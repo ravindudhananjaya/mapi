@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -7,6 +6,8 @@ import Features from './components/Features';
 import Footer from './components/Footer';
 import About from './components/About';
 import Process from './components/Process';
+import Testimonials from './components/Testimonials';
+import AppShowcase from './components/AppShowcase';
 import ContactPage from './components/ContactPage';
 import Auth from './components/Auth';
 import Checkout from './components/Checkout';
@@ -24,49 +25,49 @@ function App() {
   const [selection, setSelection] = useState<CheckoutSelection | null>(null);
   const [activeSubscription, setActiveSubscription] = useState<CheckoutSelection | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  
+
   const content = CONTENT[lang];
 
   const handlePlanSelect = (plan: PricingTier) => {
     setSelection({ type: 'plan', data: plan });
     if (!user) {
-        setCurrentPage('login');
+      setCurrentPage('login');
     } else {
-        setCurrentPage('checkout');
+      setCurrentPage('checkout');
     }
   };
 
   const handleServiceSelect = (service: ServiceItem) => {
     setSelection({ type: 'service', data: service });
     if (!user) {
-        setCurrentPage('login');
+      setCurrentPage('login');
     } else {
-        setCurrentPage('checkout');
+      setCurrentPage('checkout');
     }
   };
 
   const handleAuthSuccess = (role: UserRole) => {
     // Simulate user data with role
-    setUser({ 
-        name: role === 'family' ? "Ram Kumar" : role === 'admin' ? "Admin User" : role === 'provider' ? "Sita Sharma" : "Driver Hari", 
-        email: "user@example.com",
-        role: role
-    }); 
-    
+    setUser({
+      name: role === 'family' ? "Ram Kumar" : role === 'admin' ? "Admin User" : role === 'provider' ? "Sita Sharma" : "Driver Hari",
+      email: "user@example.com",
+      role: role
+    });
+
     // Redirect based on role
     if (role === 'admin') {
-        setCurrentPage('admin-dashboard');
+      setCurrentPage('admin-dashboard');
     } else if (role === 'provider') {
-        setCurrentPage('provider-dashboard');
+      setCurrentPage('provider-dashboard');
     } else if (role === 'driver') {
-        setCurrentPage('driver-dashboard');
+      setCurrentPage('driver-dashboard');
     } else {
-        // Family User
-        if (selection) {
-          setCurrentPage('checkout');
-        } else {
-          setCurrentPage('services');
-        }
+      // Family User
+      if (selection) {
+        setCurrentPage('checkout');
+      } else {
+        setCurrentPage('services');
+      }
     }
   };
 
@@ -76,13 +77,13 @@ function App() {
   };
 
   const handleCheckoutSuccess = () => {
-      setActiveSubscription(selection); // Save the purchase
-      setCurrentPage('payment-success');
+    setActiveSubscription(selection); // Save the purchase
+    setCurrentPage('payment-success');
   };
 
   const handleGoToDashboard = () => {
-      setSelection(null); 
-      setCurrentPage('dashboard');
+    setSelection(null);
+    setCurrentPage('dashboard');
   }
 
   // Simple Router
@@ -93,17 +94,19 @@ function App() {
           <>
             <Hero content={content} onCtaClick={() => setCurrentPage('services')} />
             <Features content={content} />
-            <div className="bg-gray-50 py-12 text-center">
-               <h2 className="text-3xl font-bold mb-6 text-gray-900">{content.pricing.title}</h2>
-               <p className="mb-8 text-gray-600 max-w-2xl mx-auto px-4">{content.pricing.subtitle}</p>
-               <button 
-                 onClick={() => setCurrentPage('services')}
-                 className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-teal hover:bg-teal-900 md:py-4 md:text-lg transition-all"
-               >
-                 View All Packages
-               </button>
-            </div>
+            <AppShowcase content={content} />
             <Process content={content} />
+            <Testimonials content={content} />
+            <div className="bg-gray-50 py-24 text-center">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">{content.pricing.title}</h2>
+              <p className="mb-8 text-gray-600 max-w-2xl mx-auto px-4">{content.pricing.subtitle}</p>
+              <button
+                onClick={() => setCurrentPage('services')}
+                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-brand-teal hover:bg-teal-900 md:py-4 md:text-lg transition-all shadow-lg"
+              >
+                View All Packages
+              </button>
+            </div>
           </>
         );
       case 'services':
@@ -135,16 +138,16 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans flex flex-col">
-      <Navbar 
-        content={content} 
-        lang={lang} 
-        setLang={setLang} 
+      <Navbar
+        content={content}
+        lang={lang}
+        setLang={setLang}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         user={user}
         onLogout={handleLogout}
       />
-      
+
       <main className="flex-grow">
         {renderPage()}
       </main>

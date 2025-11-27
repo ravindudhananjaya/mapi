@@ -52,7 +52,7 @@ export interface ServiceItem {
   price: string;
 }
 
-export type CheckoutSelection = 
+export type CheckoutSelection =
   | { type: 'plan'; data: PricingTier }
   | { type: 'service'; data: ServiceItem };
 
@@ -102,12 +102,66 @@ export interface ContentData {
     problemTitle: string;
     problemText: string;
     teamTitle: string;
-    team: string[];
+    team: {
+      name: string;
+      role: string;
+      image: string;
+    }[];
     differentiationTitle: string;
-    differentiationPoints: {title: string, desc: string}[];
+    differentiationPoints: { title: string, desc: string }[];
   };
+  landingServices: {
+    title: string;
+    subtitle: string;
+    services: {
+      title: string;
+      description: string;
+      icon: string;
+    }[];
+  };
+  detailedServices: {
+    title: string;
+    subtitle: string;
+    items: {
+      title: string;
+      description: string;
+      image: string;
+      benefits: string[];
+    }[];
+  };
+  appShowcase: {
+    title: string;
+    subtitle: string;
+    features: {
+      title: string;
+      description: string;
+      icon: string;
+    }[];
+  };
+  testimonials: {
+    title: string;
+    subtitle: string;
+    items: {
+      name: string;
+      location: string;
+      quote: string;
+      image: string;
+    }[];
+  };
+  serviceTestimonials: {
+    name: string;
+    location: string;
+    quote: string;
+    image: string;
+    role: string;
+  }[];
   process: {
     title: string;
+    subtitle: string;
+    steps: {
+      title: string;
+      description: string;
+    }[];
     trainingTitle: string;
     trainingPoints: string[];
     partnersTitle: string;
