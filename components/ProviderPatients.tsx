@@ -1,21 +1,48 @@
-import React from 'react';
-import { ContentData } from '../types';
+import React, { useState, useEffect } from 'react';
+import { ContentData, User as UserType } from '../types';
+import { apiClient } from '../src/api/client';
 import { User, Phone, MapPin, Calendar, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ProviderPatientsProps {
     content: ContentData;
+    user: UserType | null;
 }
 
-const ProviderPatients: React.FC<ProviderPatientsProps> = ({ content }) => {
-    // Mock Data for Patients
-    const patients = [
-        { id: 1, name: 'Hari Prasad', age: 65, gender: 'Male', address: 'Baneshwor-10', phone: '9841234567', condition: 'Hypertension', lastVisit: 'Oct 25, 2024' },
-        { id: 2, name: 'Sita Devi', age: 58, gender: 'Female', address: 'Tinkune', phone: '9841987654', condition: 'Diabetes', lastVisit: 'Oct 20, 2024' },
-        { id: 3, name: 'Ram Kumar', age: 72, gender: 'Male', address: 'Lalitpur-3', phone: '9851012345', condition: 'Post-Surgery Care', lastVisit: 'Oct 22, 2024' },
-        { id: 4, name: 'Krishna Gopal', age: 60, gender: 'Male', address: 'Bhaktapur', phone: '9801234567', condition: 'Arthritis', lastVisit: 'Oct 15, 2024' },
-        { id: 5, name: 'Maya Gurung', age: 55, gender: 'Female', address: 'Chabahil', phone: '9812345678', condition: 'General Checkup', lastVisit: 'Oct 26, 2024' },
-    ];
+const ProviderPatients: React.FC<ProviderPatientsProps> = ({ content, user }) => {
+    const [patients, setPatients] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchPatients = async () => {
+            if (!user) return;
+            try {
+                // Fetch all bookings for this provider to derive patients list
+                const bookings = await apiClient.get(`/bookings?providerUserId=${user.id}`);
+
+                // Extract unique patients
+                const uniquePatientsMap = new Map();
+                bookings.forEach((b: any) => {
+                    if (b.user && !uniquePatientsMap.has(b.user.id)) {
+                        uniquePatientsMap.set(b.user.id, {
+                            id: b.user.id,
+                            name: b.user.name,
+                            age: 'N/A', // Age not in user model yet
+                            gender: 'N/A', // Gender not in user model yet
+                            address: b.user.address || 'No address',
+                            phone: b.user.phone || 'No phone',
+                            condition: 'General Care', // Placeholder
+                            lastVisit: new Date(b.date).toLocaleDateString()
+                        });
+                    }
+                });
+
+                setPatients(Array.from(uniquePatientsMap.values()));
+            } catch (error) {
+                console.error("Failed to fetch provider patients:", error);
+            }
+        };
+        fetchPatients();
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-gray-50 p-4 sm:p-8">

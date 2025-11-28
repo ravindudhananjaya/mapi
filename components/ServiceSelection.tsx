@@ -37,7 +37,14 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ content, onSelectTy
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 }}
                         onClick={() => onSelectType('subscription')}
-                        className="group relative bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-teal transition-all duration-300 hover:scale-[1.02]"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                onSelectType('subscription');
+                            }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        className="group relative bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-teal transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-brand-teal/20"
                     >
                         <div className="absolute top-0 right-0 bg-brand-teal/10 w-32 h-32 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-150"></div>
 
@@ -72,7 +79,14 @@ const ServiceSelection: React.FC<ServiceSelectionProps> = ({ content, onSelectTy
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
                         onClick={() => onSelectType('onetime')}
-                        className="group relative bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-orange transition-all duration-300 hover:scale-[1.02]"
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                onSelectType('onetime');
+                            }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        className="group relative bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-orange transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-brand-orange/20"
                     >
                         <div className="absolute top-0 right-0 bg-brand-orange/10 w-32 h-32 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-150"></div>
 

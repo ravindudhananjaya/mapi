@@ -1,14 +1,15 @@
 
 import React, { useState } from 'react';
 import { ContentData, UserRole } from '../types';
-import { Lock, Mail, User, Eye, EyeOff, Shield, Heart, Truck } from 'lucide-react';
+import { apiClient } from '../src/api/client';
+import { Lock, Mail, User, Eye, EyeOff, Shield, Heart, Truck, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 interface AuthProps {
   content: ContentData;
   initialMode: 'login' | 'register';
-  onAuthSuccess: (role: UserRole) => void;
+  onAuthSuccess: (user: any) => void;
   onSwitchMode: (mode: 'login' | 'register') => void;
 }
 
@@ -16,9 +17,52 @@ const Auth: React.FC<AuthProps> = ({ content, initialMode, onAuthSuccess }) => {
   const isLogin = initialMode === 'login';
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent, role: UserRole = 'family') => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent, demoRole?: UserRole) => {
     e.preventDefault();
-    onAuthSuccess(role);
+    setError(null);
+    setLoading(true);
+
+    try {
+      if (demoRole) {
+        // Demo login logic (bypass API for now or implement demo endpoint)
+        // Create a mock user for demo
+        const demoUser = {
+          id: 999,
+          name: demoRole === 'admin' ? 'Demo Admin' : 'Demo User',
+          email: 'demo@example.com',
+          role: demoRole
+        };
+        onAuthSuccess(demoUser);
+        return;
+      }
+
+      const formData = new FormData(e.target as HTMLFormElement);
+      const data = Object.fromEntries(formData.entries());
+
+      if (isLogin) {
+        const response = await apiClient.post('/auth/login', data);
+        const user = { ...response.user, role: response.user.role.toLowerCase() };
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(user));
+        onAuthSuccess(user);
+      } else {
+        if (data.password !== data.confirmPassword) {
+          throw new Error("Passwords do not match");
+        }
+        const response = await apiClient.post('/auth/register', data);
+        const user = { ...response.user, role: response.user.role.toLowerCase() };
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(user));
+        onAuthSuccess(user);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,6 +98,12 @@ const Auth: React.FC<AuthProps> = ({ content, initialMode, onAuthSuccess }) => {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={(e) => handleSubmit(e)}>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg flex items-center gap-2 text-sm">
+              <AlertCircle className="h-4 w-4" />
+              {error}
+            </div>
+          )}
           <div className="space-y-5">
             {!isLogin && (
               <motion.div

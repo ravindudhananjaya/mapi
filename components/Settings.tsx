@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ContentData, User } from '../types';
+import { apiClient } from '../src/api/client';
 import { User as UserIcon, Mail, Phone, MapPin, Save, Bell, Shield, Globe } from 'lucide-react';
 
 interface SettingsProps {
@@ -29,11 +30,23 @@ const Settings: React.FC<SettingsProps> = ({ content, user }) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate save
-        setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
+        if (!user?.id) return;
+
+        try {
+            await apiClient.patch(`/users/${user.id}`, {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                address: formData.address
+            });
+            setSaved(true);
+            setTimeout(() => setSaved(false), 3000);
+        } catch (error) {
+            console.error("Failed to update profile:", error);
+            alert("Failed to update profile.");
+        }
     };
 
     return (

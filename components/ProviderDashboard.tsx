@@ -1,35 +1,59 @@
-import React, { useState } from 'react';
-import { ContentData, ServiceType } from '../types';
-import { MapPin, CheckCircle, Calendar, Clock, Filter, Check, X, MessageSquare, User, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ContentData, ServiceType, User } from '../types';
+import { apiClient } from '../src/api/client';
+import { MapPin, CheckCircle, Calendar, Clock, Filter, Check, X, MessageSquare, User as UserIcon, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 interface ProviderDashboardProps {
     content: ContentData;
+    user: User | null;
 }
 
-const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ content }) => {
+const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ content, user }) => {
     const navigate = useNavigate();
 
-    // Mock Data
-    const [requests, setRequests] = useState([
-        { id: 101, patient: 'Ram Bahadur', address: 'Baneshwor, KTM', time: '10:00 AM', type: 'subscription' as ServiceType, date: 'Oct 25, 2024' },
-        { id: 102, patient: 'Gita Devi', address: 'Koteshwor, KTM', time: '02:00 PM', type: 'onetime' as ServiceType, date: 'Oct 26, 2024' },
-    ]);
+    const [requests, setRequests] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchBookings = async () => {
+            if (!user) return;
+            try {
+                // Fetch PENDING bookings for this provider
+                const pending = await apiClient.get(`/bookings?providerUserId=${user.id}&status=PENDING`);
+                setRequests(pending);
+            } catch (error) {
+                console.error("Failed to fetch provider bookings:", error);
+            }
+        };
+        fetchBookings();
+    }, [user]);
 
     const messages = [
         { id: 1, from: 'Ram Kumar (Son)', text: 'Please check BP twice today.', time: '2 hours ago' },
         { id: 2, from: 'Sita Devi', text: 'I am running late for the appointment.', time: 'Yesterday' },
     ];
 
-    const handleApprove = (id: number) => {
-        setRequests(requests.filter(r => r.id !== id));
-        alert("Booking Approved!");
+    const handleApprove = async (id: number) => {
+        try {
+            await apiClient.patch(`/bookings/${id}/status`, { status: 'APPROVED' });
+            setRequests(requests.filter(r => r.id !== id));
+            alert("Booking Approved!");
+        } catch (error) {
+            console.error("Failed to approve booking:", error);
+            alert("Failed to approve booking.");
+        }
     };
 
-    const handleDecline = (id: number) => {
-        setRequests(requests.filter(r => r.id !== id));
-        alert("Booking Declined");
+    const handleDecline = async (id: number) => {
+        try {
+            await apiClient.patch(`/bookings/${id}/status`, { status: 'DECLINED' });
+            setRequests(requests.filter(r => r.id !== id));
+            alert("Booking Declined");
+        } catch (error) {
+            console.error("Failed to decline booking:", error);
+            alert("Failed to decline booking.");
+        }
     };
 
     return (
@@ -73,20 +97,20 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ content }) => {
                                             >
                                                 <div className="flex justify-between items-start mb-4">
                                                     <div>
-                                                        <h3 className="font-bold text-gray-900">{req.patient}</h3>
+                                                        <h3 className="font-bold text-gray-900">{req.user?.name || 'Unknown Patient'}</h3>
                                                         <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                                                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {req.date}</span>
-                                                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {req.time}</span>
+                                                            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(req.date).toLocaleDateString()}</span>
+                                                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(req.date).toLocaleTimeString()}</span>
                                                         </div>
                                                     </div>
-                                                    <span className={`text-xs px-2 py-1 rounded border capitalize ${req.type === 'subscription' ? 'bg-purple-50 text-purple-700 border-purple-100' : 'bg-blue-50 text-blue-700 border-blue-100'}`}>
-                                                        {req.type}
+                                                    <span className={`text-xs px-2 py-1 rounded border capitalize ${req.service?.type === 'SUBSCRIPTION' ? 'bg-purple-50 text-purple-700 border-purple-100' : 'bg-blue-50 text-blue-700 border-blue-100'}`}>
+                                                        {req.service?.type || 'Service'}
                                                     </span>
                                                 </div>
 
                                                 <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
                                                     <MapPin className="w-4 h-4 text-gray-400" />
-                                                    {req.address}
+                                                    {req.user?.address || 'No address provided'}
                                                 </div>
 
                                                 <div className="flex gap-3">
@@ -119,7 +143,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ content }) => {
                                 {messages.map((msg) => (
                                     <div key={msg.id} className="p-4 hover:bg-gray-50 transition-colors cursor-pointer flex gap-3">
                                         <div className="bg-gray-100 p-2 rounded-full h-fit">
-                                            <User className="h-5 w-5 text-gray-500" />
+                                            <UserIcon className="h-5 w-5 text-gray-500" />
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex justify-between items-start mb-1">
@@ -155,7 +179,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ content }) => {
                                     Send Message
                                 </button>
                                 <button className="w-full text-left px-4 py-3 rounded-lg bg-gray-50 hover:bg-gray-100 text-sm font-medium text-gray-700 transition-colors flex items-center gap-3">
-                                    <User className="w-4 h-4 text-brand-teal" />
+                                    <UserIcon className="w-4 h-4 text-brand-teal" />
                                     Add Patient Note
                                 </button>
                             </div>

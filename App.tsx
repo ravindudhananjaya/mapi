@@ -40,7 +40,10 @@ function AppContent() {
   const [lang, setLang] = useState<Language>(Language.EN);
   const [selection, setSelection] = useState<CheckoutSelection | null>(null);
   const [activeSubscription, setActiveSubscription] = useState<CheckoutSelection | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [serviceInfo, setServiceInfo] = useState<ServiceInfo | null>(null);
 
   const navigate = useNavigate();
@@ -72,34 +75,29 @@ function AppContent() {
 
   const handleServiceTypeSelect = (type: 'subscription' | 'onetime') => {
     if (type === 'subscription') {
-      navigate('/subscription-plans');
+      navigate('/book-subscription');
     } else {
-      navigate('/onetime-services');
+      navigate('/book-onetime');
     }
   };
 
-  const handleAuthSuccess = (role: UserRole) => {
-    // Simulate user data with role
-    setUser({
-      name: role === 'family' ? "Ram Kumar" : role === 'admin' ? "Admin User" : role === 'provider' ? "Sita Sharma" : "Driver Hari",
-      email: "user@example.com",
-      role: role
-    });
+  const handleAuthSuccess = (user: User) => {
+    setUser(user);
 
     // Redirect based on role
-    if (role === 'admin') {
+    if (user.role === 'admin') {
       navigate('/admin-dashboard');
-    } else if (role === 'provider') {
+    } else if (user.role === 'provider') {
       navigate('/provider-dashboard');
-    } else if (role === 'driver') {
+    } else if (user.role === 'driver') {
       navigate('/driver-dashboard');
     } else {
       // Family User
       if (selection) {
         navigate('/service-info');
       } else {
-        // NEW FLOW: Go to Service Selection instead of Services directly
-        navigate('/service-selection');
+        // NEW FLOW: Go to Book Service instead of Services directly
+        navigate('/book-service');
       }
     }
   };
@@ -123,11 +121,21 @@ function AppContent() {
   }
 
   // Helper to determine if we are on a dashboard page
-  const isDashboardPage = ['/dashboard', '/admin-dashboard', '/provider-dashboard', '/driver-dashboard', '/settings'].includes(location.pathname);
+  const isDashboardPage = (path: string) => {
+    return path.startsWith('/dashboard') ||
+      path.startsWith('/admin-') ||
+      path.startsWith('/provider-') ||
+      path.startsWith('/driver-') ||
+      path.startsWith('/settings') ||
+      path.startsWith('/reports') ||
+      (user && (path === '/book-subscription' || path === '/book-onetime'));
+  };
+
+  const showNavbar = !user || !isDashboardPage(location.pathname);
 
   return (
     <div className="min-h-screen bg-white font-sans flex flex-col">
-      {!user && (
+      {showNavbar && (
         <Navbar
           content={content}
           lang={lang}
@@ -190,7 +198,7 @@ function AppContent() {
           <Route path="/subscription-plans" element={<SubscriptionPlans content={content} onSelectPlan={handlePlanSelect} />} />
           <Route path="/onetime-services" element={<OneTimeServices content={content} onSelectService={handleServiceSelect} />} />
           <Route path="/service-info" element={<ServiceInfoPage content={content} selection={selection} onSubmit={handleServiceInfoSubmit} />} />
-          <Route path="/checkout" element={<Checkout content={content} selection={selection} serviceInfo={serviceInfo} onSuccess={handleCheckoutSuccess} />} />
+          <Route path="/checkout" element={<Checkout content={content} selection={selection} serviceInfo={serviceInfo} onSuccess={handleCheckoutSuccess} user={user} />} />
           <Route path="/payment-success" element={<PaymentSuccess content={content} selection={selection || activeSubscription} onGoToDashboard={handleGoToDashboard} />} />
 
           {/* Dashboard Routes */}
@@ -232,21 +240,21 @@ function AppContent() {
           <Route path="/provider-dashboard" element={
             user ? (
               <DashboardLayout user={user} onLogout={handleLogout}>
-                <ProviderDashboard content={content} />
+                <ProviderDashboard content={content} user={user} />
               </DashboardLayout>
             ) : <Navigate to="/login" />
           } />
           <Route path="/provider-schedule" element={
             user ? (
               <DashboardLayout user={user} onLogout={handleLogout}>
-                <ProviderSchedule content={content} />
+                <ProviderSchedule content={content} user={user} />
               </DashboardLayout>
             ) : <Navigate to="/login" />
           } />
           <Route path="/provider-patients" element={
             user ? (
               <DashboardLayout user={user} onLogout={handleLogout}>
-                <ProviderPatients content={content} />
+                <ProviderPatients content={content} user={user} />
               </DashboardLayout>
             ) : <Navigate to="/login" />
           } />

@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
-import { ContentData, ServiceType } from '../types';
+import React, { useState, useEffect } from 'react';
+import { ContentData, ServiceType, User } from '../types';
+import { apiClient } from '../src/api/client';
 import { MapPin, Navigation, Camera, Clipboard, CheckCircle, Clock, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProviderScheduleProps {
     content: ContentData;
+    user: User | null;
 }
 
-const ProviderSchedule: React.FC<ProviderScheduleProps> = ({ content }) => {
+const ProviderSchedule: React.FC<ProviderScheduleProps> = ({ content, user }) => {
     const [viewMode, setViewMode] = useState<'today' | 'week' | 'month'>('today');
     const [filterType, setFilterType] = useState<'all' | 'subscription' | 'onetime'>('all');
+    const [schedule, setSchedule] = useState<any[]>([]);
 
-    const schedule = [
-        { id: 1, patient: 'Hari Prasad', address: 'Baneshwor-10', time: '10:00 AM', status: 'pending', type: 'subscription', date: 'Today' },
-        { id: 2, patient: 'Sita Devi', address: 'Tinkune', time: '02:00 PM', status: 'completed', type: 'onetime', date: 'Today' },
-        { id: 3, patient: 'Ram Kumar', address: 'Lalitpur-3', time: '09:00 AM', status: 'pending', type: 'subscription', date: 'Tomorrow' },
-        { id: 4, patient: 'Krishna Gopal', address: 'Bhaktapur', time: '11:00 AM', status: 'pending', type: 'subscription', date: 'Oct 28' },
-        { id: 5, patient: 'Maya Gurung', address: 'Chabahil', time: '04:00 PM', status: 'pending', type: 'onetime', date: 'Nov 01' },
-    ];
+    useEffect(() => {
+        const fetchSchedule = async () => {
+            if (!user) return;
+            try {
+                // Fetch APPROVED bookings for this provider
+                const bookings = await apiClient.get(`/bookings?providerUserId=${user.id}&status=APPROVED`);
+
+                // Transform API data to component format
+                const formattedSchedule = bookings.map((b: any) => ({
+                    id: b.id,
+                    patient: b.user?.name || 'Unknown',
+                    address: b.user?.address || 'No address',
+                    time: new Date(b.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    status: b.status.toLowerCase(),
+                    type: b.service?.type === 'SUBSCRIPTION' ? 'subscription' : 'onetime',
+                    date: new Date(b.date).toDateString() === new Date().toDateString() ? 'Today' :
+                        new Date(b.date).toDateString() === new Date(Date.now() + 86400000).toDateString() ? 'Tomorrow' :
+                            new Date(b.date).toLocaleDateString()
+                }));
+                setSchedule(formattedSchedule);
+            } catch (error) {
+                console.error("Failed to fetch provider schedule:", error);
+            }
+        };
+        fetchSchedule();
+    }, [user]);
 
     const filteredSchedule = schedule.filter(item => {
         if (filterType !== 'all' && item.type !== filterType) return false;

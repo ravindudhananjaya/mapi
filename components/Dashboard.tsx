@@ -1,13 +1,14 @@
 
-import React, { useState } from 'react';
-import { ContentData, CheckoutSelection, ServiceItem } from '../types';
-import { User, Calendar, Activity, Phone, MessageCircle, FileText, CheckCircle, Video, Download, Star, Bot, Plus, Sparkles, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ContentData, CheckoutSelection, ServiceItem, User } from '../types';
+import { apiClient } from '../src/api/client';
+import { User as UserIcon, Calendar, Activity, Phone, MessageCircle, FileText, CheckCircle, Video, Download, Star, Bot, Plus, Sparkles, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DashboardProps {
     content: ContentData;
     activeSelection: CheckoutSelection | null;
-    user: { name: string; email: string } | null;
+    user: User | null;
     onBookService: (service: ServiceItem) => void;
 }
 
@@ -16,13 +17,21 @@ const Dashboard: React.FC<DashboardProps> = ({ content, activeSelection, user, o
 
     const [aiModalOpen, setAiModalOpen] = useState(false);
     const [selectedVisitForAi, setSelectedVisitForAi] = useState<any>(null);
+    const [bookings, setBookings] = useState<any[]>([]);
 
-    // Mock Data
-    const recentVisits = [
-        { id: '1', date: 'Oct 24, 2024', type: 'Health Checkup', provider: 'Sita Sharma', bp: '120/80', sugar: '95', notes: 'Patient is feeling well. Blood pressure is stable. Medication refill needed.', hasVideo: true },
-        { id: '2', date: 'Oct 20, 2024', type: 'Grocery Assistance', provider: 'Ram Bahadur', notes: 'Bought weekly vegetables and fruits. Receipt attached.', hasVideo: false },
-        { id: '3', date: 'Oct 15, 2024', type: 'Doctor Visit', provider: 'Sita Sharma', bp: '125/82', sugar: '98', notes: 'Follow-up with Cardiologist. Everything looks good.', hasVideo: true },
-    ];
+    useEffect(() => {
+        const fetchBookings = async () => {
+            if (user?.id) {
+                try {
+                    const data = await apiClient.get(`/bookings?userId=${user.id}`);
+                    setBookings(data);
+                } catch (error) {
+                    console.error("Failed to fetch bookings:", error);
+                }
+            }
+        };
+        fetchBookings();
+    }, [user]);
 
     const handleAiAnalysis = (visit: any) => {
         setSelectedVisitForAi(visit);
@@ -176,51 +185,39 @@ const Dashboard: React.FC<DashboardProps> = ({ content, activeSelection, user, o
                         <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">{content.dashboard.visitHistory}</h3>
                             <div className="space-y-6">
-                                {recentVisits.map((visit, idx) => (
-                                    <motion.div
-                                        key={visit.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.5 + (idx * 0.1) }}
-                                        className="border border-gray-100 rounded-xl p-5 hover:bg-gray-50 transition-colors"
-                                    >
-                                        <div className="flex justify-between items-start mb-3">
-                                            <div>
-                                                <p className="text-sm text-gray-500">{visit.date}</p>
-                                                <h4 className="font-bold text-gray-900 text-lg">{visit.type}</h4>
-                                                <p className="text-sm text-brand-teal font-medium">By {visit.provider}</p>
+                                {bookings.length === 0 ? (
+                                    <p className="text-gray-500 text-center py-4">No bookings found.</p>
+                                ) : (
+                                    bookings.map((visit, idx) => (
+                                        <motion.div
+                                            key={visit.id}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.5 + (idx * 0.1) }}
+                                            className="border border-gray-100 rounded-xl p-5 hover:bg-gray-50 transition-colors"
+                                        >
+                                            <div className="flex justify-between items-start mb-3">
+                                                <div>
+                                                    <p className="text-sm text-gray-500">{new Date(visit.date).toLocaleDateString()}</p>
+                                                    <h4 className="font-bold text-gray-900 text-lg">{visit.service?.title || 'Service'}</h4>
+                                                    <p className="text-sm text-brand-teal font-medium">Status: {visit.status}</p>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    {/* Placeholder for vitals if we add them to DB later */}
+                                                </div>
                                             </div>
-                                            <div className="flex gap-2">
-                                                {visit.bp && <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded font-bold">BP: {visit.bp}</span>}
-                                                {visit.sugar && <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded font-bold">Sug: {visit.sugar}</span>}
+                                            {visit.notes && (
+                                                <div className="bg-yellow-50 p-3 rounded border border-yellow-100 mb-4">
+                                                    <p className="text-sm text-gray-700 italic">
+                                                        <span className="font-bold not-italic text-yellow-800">Notes:</span> {visit.notes}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            <div className="flex flex-wrap gap-3">
+                                                {/* Actions can be re-enabled when backend supports reports/video */}
                                             </div>
-                                        </div>
-                                        <div className="bg-yellow-50 p-3 rounded border border-yellow-100 mb-4">
-                                            <p className="text-sm text-gray-700 italic">
-                                                <span className="font-bold not-italic text-yellow-800">{content.dashboard.providerNote}:</span> {visit.notes}
-                                            </p>
-                                        </div>
-                                        <div className="flex flex-wrap gap-3">
-                                            {visit.hasVideo && (
-                                                <button className="flex items-center gap-2 text-xs bg-brand-orange text-white px-3 py-2 rounded hover:bg-orange-700 transition-colors">
-                                                    <Video className="h-3 w-3" /> {content.dashboard.watchVideo}
-                                                </button>
-                                            )}
-                                            <button className="flex items-center gap-2 text-xs border border-gray-300 text-gray-700 px-3 py-2 rounded hover:bg-gray-200 transition-colors">
-                                                <Download className="h-3 w-3" /> {content.dashboard.downloadReport}
-                                            </button>
-
-                                            {(visit.bp || visit.sugar) && (
-                                                <button
-                                                    onClick={() => handleAiAnalysis(visit)}
-                                                    className="flex items-center gap-2 text-xs bg-purple-100 text-purple-700 border border-purple-200 px-3 py-2 rounded hover:bg-purple-200 transition-colors"
-                                                >
-                                                    <Sparkles className="h-3 w-3" /> {content.dashboard.readWithAi}
-                                                </button>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                ))}
+                                        </motion.div>
+                                    )))}
                             </div>
                         </motion.div>
                     </div>

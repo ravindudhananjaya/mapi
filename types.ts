@@ -12,6 +12,7 @@ export type BookingStatus = 'pending' | 'approved' | 'declined' | 'completed';
 export type ServiceType = 'subscription' | 'onetime';
 
 export interface User {
+  id?: number;
   name: string;
   email: string;
   role: UserRole;
